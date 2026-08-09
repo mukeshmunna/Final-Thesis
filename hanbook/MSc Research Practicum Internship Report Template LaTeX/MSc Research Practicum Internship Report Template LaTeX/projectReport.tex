@@ -1,0 +1,159 @@
+\documentclass[12pt,a4paper]{article}
+
+%% -------------------------------
+%% NCI MSc Research Project Template      
+%% -------------------------------
+
+
+% ----------------------------------------------------------------
+% Report - Main document
+% ----------------------------------------------------------------
+
+%Project Type Switch -- change this if and only if you are doing an industry Internship
+\newif\ifindustry
+
+\industryfalse
+% \industrytrue
+
+%% ---------------------------------
+%% |      Additional packages      |
+%% ---------------------------------
+
+\usepackage[british,UKenglish]{babel}  %% Language
+\usepackage[a4paper, margin=1in]{geometry} %% margins
+\usepackage{cite}
+\usepackage{natbib} %% References -- uncomment this if you want to use the Harvard referencing style
+\usepackage{graphicx} %http://en.wikibooks.org/wiki/LaTeX/Importing_Graphics#Graphics_storage
+\usepackage[export]{adjustbox}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{tikz}
+\usepackage{algorithm} % Code-Listings
+\usepackage{algorithmic} % Code-Listings
+% see http://www.ctan.org/tex-archive/macros/latex/contrib/algorithm2e/algorithm2e.pdf
+% for more sophisticated algorithm listings
+\usepackage{amsmath,amsfonts,amssymb}	% AMS mathematical facilities, fonts and symbols
+\usepackage{lastpage}
+\usepackage{datetime}
+\usepackage[bookmarks=true, colorlinks=false]{hyperref} % Links - must be last package
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./figures/}} %Use curly braces for each path to add 
+
+%% ---------------------------------
+%% | Information about the report  |
+%% ---------------------------------
+
+% Uncomment one of the following, according to your module name
+\newcommand{\mytype}{MSc Research Project / (Research) Practicum / Internship}
+%\newcommand{\mytype}{MSc Research Project}
+%\newcommand{\mytype}{MSc (Research) Practicum}
+%\newcommand{\mytype}{MSc Internship}
+
+% Uncomment one of the following, according to your programme
+\newcommand{\mystream}{Programme Name}
+%\newcommand{\mystream}{Cloud Computing}
+%\newcommand{\mystream}{Data Analytics}
+%\newcommand{\mystream}{Cybersecurity}
+%\newcommand{\mystream}{Artificial Intelligence}
+%\newcommand{\mystream}{Artificial Intelligence for Business}
+%\newcommand{\mystream}{FinTech}
+%\newcommand{\mystream}{Open Data Practice}
+
+
+\newcommand{\myname}{Forename Surname}
+\newcommand{\studentID}{XXX}
+\newcommand{\mytitle}{Title}
+
+\newcommand{\supervisor}{XXX}
+\newcommand{\supervisortwo}{XXX} % for Internship with a clear supervisor only!
+
+
+%% -------------------------------
+%% |  Information for PDF file   |
+%% -------------------------------
+%% Auto-Fill this information
+\hypersetup{
+ pdfauthor={\myname},
+ pdftitle={\mytitle},
+ pdfsubject={\mytype},
+ pdfkeywords={\mystream}
+}
+
+%% ---------------------------------
+%% | ToDo Marker - only for draft! |
+%% ---------------------------------
+% Remove all \todo instances for the final version!
+\setlength{\marginparwidth}{20mm}
+
+\newcommand{\margtodo}
+{\marginpar{\textbf{\textcolor{red}{ToDo}}}{}}
+
+\newcommand{\todo}[1]
+{{\textbf{\textcolor{red}{(\margtodo{}#1)}}}{}}
+
+
+% Describe separation hints here:
+\hyphenation{
+% Man-age-ment
+}
+
+
+%% ------------------------
+%% |    Including files   |
+%% ------------------------
+% Only files listed here will be included!
+% Useful command for partially translating the document (for bug-fixing e.g.)
+\includeonly{%
+titlepage,
+text/abstract,
+text/introduction,
+text/relatedwork,
+text/implementation,
+text/evaluation,
+text/conclusion,
+text/appendix
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here, main documents begins %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\include{titlepage}
+
+%% -----------------
+%% |   Main part   |
+%% -----------------
+
+\title{\mytitle}%
+%\author{\myname \\ \studentID \\ \mytype\ in \mystream}%
+\author{\myname \\ \studentID}%
+\date{}
+\maketitle
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+\input{text/abstract}
+\input{text/introduction}
+\input{text/relatedwork}
+\input{text/methodology}
+\input{text/design}
+\input{text/implementation}
+\input{text/evaluation}
+\input{text/conclusion}
+
+
+%% --------------------
+%% |   Bibliography   |
+%% --------------------
+
+% Use dcu for Harvard references --> Make sure to use correctly the citep and citet commands
+\bibliographystyle{dcu})
+
+% Use IEEEtran for numeric references (but you will need to comment natbib package, change citep/citet commands to cite, and manually type the first author last name where needed.
+%\bibliographystyle{IEEEtran}
+
+\bibliography{refs}
+
+\end{document}

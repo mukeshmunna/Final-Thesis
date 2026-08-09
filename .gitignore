@@ -1,0 +1,15 @@
+# NEVER commit the real key. Only .env.example belongs in the submission.
+.env
+backup
+handbook
+submission
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db
+.DS_Store

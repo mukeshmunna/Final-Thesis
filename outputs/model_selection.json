@@ -1,0 +1,61 @@
+{
+ "selected": "LSTM",
+ "leader_on_shock": "GRU",
+ "significant": false,
+ "reason": "GRU ranks first on shock accuracy, but against LSTM the paired McNemar test on the shock rows gives p = 0.39. On this sample the two are not distinguishable, so the incumbent LSTM is retained - the reported pipeline is built and validated on it, and swapping architectures on an insignificant gap would be fitting the sample rather than choosing a model",
+ "family": "Deep learning",
+ "criterion": "highest shock-regime accuracy, confirmed by paired McNemar",
+ "shock_accuracy": 53.19,
+ "overall_accuracy": 53.84,
+ "baseline_overall": 54.98,
+ "baseline_shock": 52.92,
+ "beats_baseline_overall": false,
+ "family_shock_accuracy": {
+  "Classical ML": 49.77,
+  "Deep learning": 54.23
+ },
+ "mcnemar_leader_vs_incumbent": {
+  "overall": {
+   "n01": 378,
+   "n10": 418,
+   "p": 0.16683355612622106
+  },
+  "shock": {
+   "n01": 127,
+   "n10": 142,
+   "p": 0.39336993637572853
+  }
+ },
+ "ranking": [
+  {
+   "model": "GRU",
+   "shock": 55.28,
+   "overall": 54.75,
+   "auc": 50.2
+  },
+  {
+   "model": "LSTM",
+   "shock": 53.19,
+   "overall": 53.84,
+   "auc": 50.04
+  },
+  {
+   "model": "Logistic Regression",
+   "shock": 51.67,
+   "overall": 53.13,
+   "auc": 51.07
+  },
+  {
+   "model": "Random Forest",
+   "shock": 49.17,
+   "overall": 52.17,
+   "auc": 50.79
+  },
+  {
+   "model": "XGBoost",
+   "shock": 48.47,
+   "overall": 52.9,
+   "auc": 50.91
+  }
+ ]
+}

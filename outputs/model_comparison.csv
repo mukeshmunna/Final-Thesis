@@ -1,0 +1,7 @@
+model,family,n,accuracy,f1,auc,brier,acc_calm,acc_shock
+Logistic Regression,Classical ML,4380,53.13,66.74,51.07,0.2536,53.42,51.67
+Random Forest,Classical ML,4380,52.17,60.21,50.79,0.2543,52.76,49.17
+XGBoost,Classical ML,4380,52.9,64.56,50.91,0.273,53.77,48.47
+GRU,Deep learning,4380,54.75,66.62,50.2,0.2561,54.64,55.28
+LSTM,Deep learning,4380,53.84,66.15,50.04,0.2561,53.96,53.19
+Baseline: always UP,Baseline,4380,54.98,70.95,50.0,0.2475,55.38,52.92

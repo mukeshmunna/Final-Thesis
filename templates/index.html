@@ -1,0 +1,1367 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hybrid Intelligence Lab · Thesis Demo</title>
+<style>
+/* ============================================================ tokens */
+:root {
+  color-scheme: light;
+  --bg:        #f7f7f5;
+  --surface:   #ffffff;
+  --surface-2: #f1f0ec;
+  --ink:       #14140f;
+  --ink-2:     #56554e;
+  --ink-3:     #8a887f;
+  --line:      #e3e2db;
+  --line-2:    #cfcec5;
+  --accent:    #2f5fd0;
+  --accent-ink:#ffffff;
+  --accent-sub:#eaf0fd;
+  --up:        #1f6fb2;
+  --down:      #c0392b;
+  --ok:        #1a7f37;
+  --bad:       #c0392b;
+  --shadow:    0 1px 2px rgba(20,20,15,.04), 0 6px 20px rgba(20,20,15,.05);
+  --radius:    14px;
+  /* One width for the header and the two columns below it, so the sidebar edge
+     and the header contents line up on a wide screen. */
+  --wide:      1280px;
+  --barh:      58px;   /* the sticky header, which the sidebar sits under */
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #131312; --surface: #1d1d1b; --surface-2: #262623;
+    --ink: #f5f4ef; --ink-2: #bdbcb3; --ink-3: #8d8b82;
+    --line: #2f2f2b; --line-2: #40403a;
+    --accent: #7ba4f5; --accent-ink: #10131c; --accent-sub: #1e2635;
+    --up: #6fb0e8; --down: #ef8071; --ok: #4cc76a; --bad: #ef8071;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #080c13; --surface: #101722; --surface-2: #17202d;
+  --ink: #f4f7fb; --ink-2: #aeb9c8; --ink-3: #738196;
+  --line: #1d2938; --line-2: #2a394c;
+  --accent: #7aa2ff; --accent-ink: #07101f; --accent-sub: #151f34;
+  --up: #66d9c5; --down: #ff8b87; --ok: #66d9a3; --bad: #ff8b87;
+  --shadow: 0 18px 45px rgba(0,0,0,.22);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+/* Model output and evidence text are not written to fit a phone. Nothing in the
+   page is allowed to set the page width, so a long ticker string or URL wraps
+   instead of pushing the whole layout sideways. */
+.say, .why, .card, .panel, .ev-row, .tag, .chip { overflow-wrap: anywhere; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 18% -10%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 30rem),
+    var(--bg);
+  color: var(--ink);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ============================================================ shell */
+.app { display: flex; flex-direction: column; min-height: 100dvh; }
+
+.bar {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar-in {
+  max-width: var(--wide); margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.mark {
+  width: 34px; height: 34px; border-radius: 10px; flex: none;
+  background: linear-gradient(145deg, var(--accent), #9c7cff); color: var(--accent-ink);
+  display: grid; place-items: center; font-size: 12px; font-weight: 800;
+  letter-spacing: -.04em; box-shadow: 0 8px 24px rgba(73,116,220,.25);
+}
+.bar h1 { font-size: 15px; font-weight: 720; margin: 0; letter-spacing: -.01em; }
+.bar .sub { font-size: 12px; color: var(--ink-3); margin: 0; }
+.bar .grow { flex: 1; }
+
+.ready {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 30px;
+  padding: 5px 10px; border: 1px solid var(--line-2); border-radius: 999px;
+  color: var(--ink-2); background: color-mix(in srgb, var(--surface) 84%, transparent);
+  font-size: 11.5px; font-weight: 650; white-space: nowrap;
+}
+.ready::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
+.ready.ok::before { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 12%, transparent); }
+.ready.bad::before { background: var(--bad); }
+
+.icon-btn {
+  background: none; border: 1px solid var(--line-2); border-radius: 9px;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  cursor: pointer; color: var(--ink-2); font-size: 15px; flex: none;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+.icon-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field > span { font-size: 11px; font-weight: 620; color: var(--ink-3);
+                text-transform: uppercase; letter-spacing: .04em; }
+select, input[type="text"] {
+  background: var(--surface-2); border: 1px solid var(--line-2);
+  border-radius: 9px; padding: 8px 10px; font-size: 13.5px; width: 100%;
+}
+select:hover, input[type="text"]:hover { border-color: var(--line-2); }
+select:focus, input[type="text"]:focus { border-color: var(--accent); outline: none; }
+
+/* ============================================================ two columns */
+.shell {
+  flex: 1; width: 100%; max-width: var(--wide); margin: 0 auto;
+  display: flex; align-items: flex-start;
+}
+.chat { flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; }
+.scroll { flex: 1; min-width: 0; }
+
+/* The personal panel. It stays on screen while the conversation scrolls, because
+   the risk profile and as-of date are what the answers above are conditioned on:
+   they belong next to the answer, not buried behind a settings button. */
+.side {
+  position: sticky; top: var(--barh); align-self: flex-start; z-index: 10;
+  width: 272px; flex: none; padding: 20px 18px 24px;
+  max-height: calc(100dvh - var(--barh)); overflow-y: auto; overscroll-behavior: contain;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 34%, transparent);
+  display: flex; flex-direction: column; gap: 22px;
+  scrollbar-width: thin; scrollbar-color: var(--line-2) transparent;
+}
+.side[hidden] { display: none; }
+.side::-webkit-scrollbar { width: 8px; }
+.side::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 99px; }
+.side-block { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.side-title { margin: 0; font-size: 10.5px; font-weight: 760; letter-spacing: .08em;
+              text-transform: uppercase; color: var(--ink-3); }
+.side-note { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--ink-3); }
+/* The presentation scenarios matter during a demo and are noise the rest of the
+   time, so they fold away without leaving the panel. */
+.side-fold { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.side-fold[hidden] { display: none; }
+.side-fold > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between; gap: 8px;
+  font-size: 10.5px; font-weight: 760; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.side-fold > summary::-webkit-details-marker { display: none; }
+.side-fold > summary::after { content: "+"; font-size: 15px; font-weight: 500; color: var(--accent); }
+.side-fold[open] > summary::after { content: "−"; }
+.side-fold > summary:hover { color: var(--ink-2); }
+
+/* who the answers are addressed to */
+.who {
+  display: flex; align-items: center; gap: 11px; min-width: 0;
+  padding: 11px 12px; border-radius: 13px;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.who-avatar {
+  width: 34px; height: 34px; flex: none; border-radius: 50%;
+  background: linear-gradient(145deg, var(--accent), #9c7cff); color: var(--accent-ink);
+  display: grid; place-items: center; font-size: 14px; font-weight: 780;
+}
+.who-text { min-width: 0; display: flex; flex-direction: column; }
+.who-text strong { font-size: 13.5px; font-weight: 720; letter-spacing: -.01em;
+                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.who-text span { font-size: 11px; color: var(--ink-3); white-space: nowrap;
+                 overflow: hidden; text-overflow: ellipsis; }
+
+/* the watchlist boxes */
+.stocks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.stock {
+  display: flex; flex-direction: column; gap: 1px; min-width: 0; cursor: pointer;
+  padding: 9px 10px; text-align: left; border-radius: 11px;
+  background: var(--surface); border: 1px solid var(--line-2);
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.stock:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
+.stock:disabled { opacity: .5; cursor: wait; }
+.stock b { font-size: 12.5px; font-weight: 760; letter-spacing: -.01em; }
+.stock span { font-size: 10.5px; color: var(--ink-3);
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stock[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-sub); }
+.stock[aria-pressed="true"] b { color: var(--accent); }
+/* Five companies in two columns leave one alone on the last row; let it take the
+   full width instead of sitting next to a gap. */
+.stock:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* one-tap questions */
+.side-links { display: flex; flex-direction: column; gap: 2px; }
+.ask-link {
+  display: flex; align-items: baseline; gap: 8px; width: 100%; cursor: pointer;
+  background: none; border: 0; border-radius: 9px; padding: 7px 9px;
+  text-align: left; font-size: 12.5px; line-height: 1.45; color: var(--ink-2);
+}
+.ask-link::before { content: "›"; color: var(--accent); font-weight: 780; }
+.ask-link:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
+.ask-link:disabled { opacity: .5; cursor: wait; }
+
+.side-facts {
+  margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: var(--ink-3);
+}
+.side-facts div { display: flex; justify-content: space-between; gap: 10px; }
+.side-facts b { color: var(--ink-2); font-weight: 620; font-variant-numeric: tabular-nums; }
+
+/* ============================================================ chat */
+.log {
+  max-width: 900px; margin: 0 auto; padding: 34px 20px 12px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.turn { display: flex; scroll-margin-top: 82px; min-width: 0; max-width: 100%; }
+.turn.me { justify-content: flex-end; }
+.me .body {
+  background: var(--accent); color: var(--accent-ink);
+  padding: 10px 16px; border-radius: 16px 16px 4px 16px;
+  max-width: min(560px, 82%); box-shadow: var(--shadow);
+}
+.turn.bot { gap: 10px; align-items: flex-start; min-width: 0; }
+.dot {
+  width: 28px; height: 28px; border-radius: 9px; flex: none; margin-top: 2px;
+  background: var(--surface); border: 1px solid var(--line-2); color: var(--accent);
+  display: grid; place-items: center; font-size: 13px; font-weight: 700;
+}
+.bot .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+
+.assistant-answer { padding: 20px 22px; animation: answer-in .24s ease-out; min-width: 0; max-width: 100%; }
+.assistant-lead { font-size: 17px; line-height: 1.5; font-weight: 680; letter-spacing: -.012em; }
+.assistant-decision, .assistant-rationale { color: var(--ink-2); }
+.assistant-action {
+  display: inline-flex; align-items: center; gap: 7px; width: fit-content;
+  margin: 3px 0 10px; padding: 6px 10px; border-radius: 999px;
+  color: var(--accent); background: var(--accent-sub); font-size: 12px; font-weight: 740;
+}
+.message-meta {
+  display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 13px; padding-top: 11px;
+  border-top: 1px solid var(--line); color: var(--ink-3); font-size: 11.5px;
+}
+.message-meta span { display: inline-flex; align-items: center; gap: 5px; min-width: 0; white-space: normal; }
+.message-meta .source { flex: 1 1 100%; flex-wrap: wrap; }
+.message-meta .source::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok);
+}
+@keyframes answer-in { from { opacity: 0; transform: translateY(5px); } }
+
+/* ============================================================ opening story */
+.hero {
+  position: relative; overflow: hidden; padding: 30px;
+  background: linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--accent-sub) 62%, var(--surface)));
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+}
+.hero::after {
+  content: ""; position: absolute; width: 260px; height: 260px; right: -120px; top: -150px;
+  border-radius: 50%; background: color-mix(in srgb, var(--accent) 12%, transparent);
+  pointer-events: none;
+}
+.eyebrow {
+  color: var(--accent); font-size: 11px; font-weight: 760;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.hero h2 { max-width: 740px; margin: 7px 0 8px; font-size: clamp(25px, 4vw, 40px);
+           line-height: 1.13; letter-spacing: -.035em; }
+.hero-copy { max-width: 760px; margin: 0; color: var(--ink-2); font-size: 14px; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 18px; }
+.primary {
+  border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 740;
+}
+.primary:hover { filter: brightness(1.06); }
+.primary:disabled, .chip:disabled { opacity: .45; cursor: wait; }
+.hero-note { color: var(--ink-3); font-size: 11.5px; }
+
+.say {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 4px 16px 16px 16px; padding: 13px 17px;
+  box-shadow: var(--shadow);
+}
+.say p { margin: 0 0 9px; }
+.say p:last-child { margin: 0; }
+.say ul { margin: 6px 0; padding-left: 20px; }
+.say li { margin: 3px 0; }
+.say h4 { margin: 0 0 6px; font-size: 14px; font-weight: 640; }
+.say .lede { font-size: 15.5px; }
+.thinking { color: var(--ink-3); min-width: 128px; }
+.thinking::after { content: ""; display: inline-block; width: 1.35em; animation: dots 1.15s steps(4,end) infinite; }
+@keyframes dots { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75%,100% { content: "..."; } }
+
+.comparison-head {
+  display: flex; justify-content: space-between; align-items: end; gap: 14px;
+  padding: 2px 2px 0;
+}
+.comparison-head h3 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
+.comparison-head p { margin: 2px 0 0; color: var(--ink-3); font-size: 12px; }
+.same-input { color: var(--accent); font-size: 11px; font-weight: 720; text-transform: uppercase;
+              letter-spacing: .06em; white-space: nowrap; }
+
+.research-comparison {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.research-comparison > summary {
+  cursor: pointer; list-style: none; padding: 15px 17px; font-size: 13.5px;
+  font-weight: 680; color: var(--ink-2); display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.research-comparison > summary::-webkit-details-marker { display: none; }
+.research-comparison > summary::after { content: "+"; color: var(--accent); font-size: 20px; font-weight: 500; }
+.research-comparison[open] > summary::after { content: "−"; }
+.research-content { border-top: 1px solid var(--line); padding: 16px; display: flex; flex-direction: column; gap: 13px; }
+.research-intro { color: var(--ink-3); font-size: 12.5px; margin: 0; }
+.research-conclusion { color: var(--ink-2); font-size: 12.5px; margin: 0; }
+
+/* ============================================================ context strip */
+.strip {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.tag {
+  font-size: 12px; color: var(--ink-2); background: var(--surface-2);
+  border-radius: 999px; padding: 4px 11px; white-space: nowrap;
+}
+.tag b { color: var(--ink); font-weight: 620; }
+.tag.hit { color: var(--ok); }
+.tag.miss { color: var(--bad); }
+
+/* ============================================================ the four answers */
+.grid4 {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1040px) { .grid4 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+/* minmax(0,1fr) rather than 1fr: a plain 1fr track keeps an implicit min-content
+   floor, so one long word in a card would widen the whole page on a phone. */
+@media (max-width: 620px)  { .grid4 { grid-template-columns: minmax(0, 1fr); } }
+
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 15px;
+  display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  box-shadow: var(--shadow);
+}
+.card.lead { border-color: color-mix(in srgb, var(--accent) 78%, var(--line)); background: var(--accent-sub); }
+
+.card-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.rank { color: var(--ink-3); font-size: 11px; font-weight: 760; letter-spacing: .06em; }
+.best-label { color: var(--accent); font-size: 9.5px; font-weight: 780; text-transform: uppercase;
+              letter-spacing: .07em; border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
+              border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
+
+.card-name { font-size: 15px; font-weight: 740; line-height: 1.25; min-width: 0; margin: 0; }
+.card-head .card-name { flex: 1 1 88px; }
+.card-adds { font-size: 11.5px; color: var(--ink-3); margin-top: -7px; }
+.card-source { display: flex; align-items: center; gap: 6px; color: var(--ink-3); font-size: 10.5px; }
+.card-source::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ok); flex: none; }
+
+.section-label { color: var(--ink-3); font-size: 9.5px; font-weight: 720;
+                 text-transform: uppercase; letter-spacing: .07em; margin-bottom: -5px; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.pill {
+  font-size: 11px; font-weight: 620; padding: 2.5px 8px; border-radius: 999px;
+  border: 1px solid var(--line-2); white-space: nowrap;
+}
+.pill.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 35%, transparent); }
+.pill.bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+.pill.mute { color: var(--ink-3); }
+.pill.accent { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+.why {
+  font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+  border-top: 1px solid var(--line); padding-top: 10px;
+}
+.why .none { color: var(--ink-3); font-style: italic; }
+/* The fusion arm explains its own arithmetic as well as the market, so its text
+   runs three times the length of the others. Four cards in a row are only
+   comparable if they are the same height, so the long one is clamped and can be
+   opened. Without this, one verbose answer pushes the other three cards' text a
+   screen further down than its own and the side-by-side reading is lost. */
+.why .txt {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 9;
+  overflow: hidden;
+  /* The fusion arm writes its answer as four labelled blocks separated by blank
+     lines. Everything else here is a single paragraph with no newlines in it, so
+     honouring them costs the other three cards nothing and buys the long one a
+     structure a reader can skim. */
+  white-space: pre-line;
+}
+.why.open .txt { display: block; }
+.why .more {
+  background: none; border: 0; padding: 4px 0 0; cursor: pointer;
+  font-size: 12px; font-weight: 620; color: var(--accent);
+}
+
+/* ============================================================ blocks */
+.panel {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 17px; box-shadow: var(--shadow);
+}
+.panel.flat { background: var(--surface-2); border-color: transparent; box-shadow: none; }
+.panel .k { font-size: 11px; font-weight: 620; color: var(--ink-3);
+            text-transform: uppercase; letter-spacing: .04em; }
+.panel .act { font-size: 18px; font-weight: 650; margin: 3px 0 3px; }
+.panel .fine { font-size: 12.5px; color: var(--ink-2); }
+.panel .fine + .fine { margin-top: 5px; color: var(--ink-3); }
+
+details.ev > summary {
+  cursor: pointer; font-size: 13px; font-weight: 620; color: var(--ink-2);
+  list-style: none; padding: 4px 0;
+}
+details.ev > summary::-webkit-details-marker { display: none; }
+details.ev > summary::before { content: "▸ "; }
+details.ev[open] > summary::before { content: "▾ "; }
+.ev-row { border-left: 2px solid var(--line-2); padding: 5px 0 5px 11px;
+          margin: 7px 0; font-size: 13px; }
+.ev-row.used { border-left-color: var(--accent); }
+.ev-meta { font-size: 11.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+th, td { text-align: left; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--line);
+         font-variant-numeric: tabular-nums; white-space: nowrap; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+     color: var(--ink-3); font-weight: 620; }
+tr.best td { font-weight: 640; color: var(--accent); }
+
+/* ============================================================ scoreboard */
+.board { border-color: color-mix(in srgb, var(--accent) 24%, var(--line-2)); padding: 20px; }
+.board-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 4px 0 14px; }
+.board-title h3 { margin: 0; font-size: 18px; letter-spacing: -.02em; }
+.board-title p { margin: 0; color: var(--accent); font-size: 12px; font-weight: 720; }
+.result-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+.result-item { padding: 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); min-width: 0; }
+.result-item.best { border-color: var(--accent); background: var(--accent-sub); }
+.result-head { display: flex; justify-content: space-between; gap: 6px; align-items: center;
+               font-size: 11.5px; font-weight: 720; min-height: 22px; }
+.result-score { font-size: 27px; line-height: 1; font-weight: 780; margin-top: 10px;
+                font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.result-item.best .result-score { color: var(--accent); }
+.result-score small { font-size: 11px; color: var(--ink-3); font-weight: 560; }
+.result-caption { margin-top: 4px; color: var(--ink-3); font-size: 10.5px; }
+.result-meter { height: 5px; margin: 9px 0; border-radius: 99px; background: var(--surface); overflow: hidden; }
+.result-meter i { display: block; height: 100%; border-radius: inherit; background: var(--ink-3); }
+.result-item.best .result-meter i { background: var(--accent); }
+.result-adds { min-height: 34px; color: var(--ink-3); font-size: 11px; }
+.result-accuracy { display: flex; justify-content: space-between; gap: 6px; padding-top: 8px;
+                   border-top: 1px solid var(--line); color: var(--ink-3); font-size: 10.5px; }
+.result-accuracy strong { color: var(--ink-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.board-note { margin: 12px 0 0; color: var(--ink-2); font-size: 12px; }
+.board .tbl-wrap + .fine, .board details + .fine { margin-top: 10px; }
+.board-tbl { min-width: 620px; }
+.board-tbl td.rk { color: var(--ink-3); font-weight: 700; width: 18px; padding-right: 8px; }
+.board-tbl td.adds { color: var(--ink-3); font-size: 12px; white-space: nowrap; }
+.board-tbl td.num { font-weight: 620; text-align: right; padding-right: 10px; }
+.board-tbl td.num.ok { color: var(--ok); font-weight: 560; }
+.board-tbl td.num.bad { color: var(--bad); font-weight: 560; }
+.board-tbl td.mt { width: 96px; padding-right: 18px; }
+.board-tbl tr.base td { color: var(--ink-3); }
+.board-tbl th.r { text-align: right; padding-right: 10px; }
+/* A last column that absorbs the leftover width, so the numeric columns sit
+   together instead of being stretched apart across the panel. */
+.board-tbl th.pad, .board-tbl td.pad { width: 100%; }
+/* A bar inside a cell. Not .bar-meter: that one is a block in a card and would
+   stretch the row height here. */
+.mini { display: block; height: 5px; width: 100%; background: var(--surface-2);
+        border-radius: 3px; overflow: hidden; }
+.mini > i { display: block; height: 100%; border-radius: 3px; }
+.board details.ev { margin-top: 12px; border-top: 1px solid var(--line); }
+
+.runs { display: flex; gap: 5px; flex-wrap: wrap; }
+.run { min-width: 54px; text-align: center; padding: 6px 8px; border-radius: 8px;
+       border: 1px solid var(--line-2); font-size: 11.5px; font-weight: 620;
+       font-variant-numeric: tabular-nums; }
+
+/* ============================================================ suggestions */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px;
+  padding: 8px 14px; font-size: 13.5px; cursor: pointer; text-align: left;
+  color: var(--ink); box-shadow: var(--shadow);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============================================================ composer */
+.composer {
+  position: sticky; bottom: 0; z-index: 15;
+  background: linear-gradient(to bottom, transparent, var(--bg) 22%);
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+}
+.composer-in { max-width: 900px; margin: 0 auto; }
+.box {
+  display: flex; align-items: flex-end; gap: 8px;
+  background: var(--surface); border: 1px solid var(--line-2);
+  border-radius: 22px; padding: 6px 6px 6px 16px; box-shadow: var(--shadow);
+}
+.box:focus-within { border-color: var(--accent); }
+textarea {
+  flex: 1; border: 0; background: none; resize: none; outline: none;
+  padding: 10px 0; font-size: 15px; line-height: 1.5; max-height: 160px; min-width: 0;
+}
+.send {
+  background: var(--accent); color: var(--accent-ink); border: 0;
+  border-radius: 999px; width: 38px; height: 38px; flex: none;
+  cursor: pointer; font-size: 16px; display: grid; place-items: center;
+}
+.send:disabled { opacity: .4; cursor: not-allowed; }
+.foot {
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  margin: 7px 4px 0; font-size: 11.5px; color: var(--ink-3);
+}
+.foot button {
+  background: none; border: 0; color: var(--ink-3); cursor: pointer;
+  font-size: 11.5px; padding: 0; text-decoration: underline;
+}
+.foot button:hover { color: var(--accent); }
+
+/* ============================================================ polish */
+.chip, .icon-btn, .primary, .send, .stock, .ask-link, select, input[type="text"] {
+  transition: border-color .15s ease, background .15s ease, color .15s ease,
+              transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.chip:hover:not(:disabled) { transform: translateY(-1px); }
+.primary:hover:not(:disabled), .send:hover:not(:disabled) { transform: translateY(-1px); }
+.box:focus-within {
+  box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+button:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+/* Below this width there is no room for a column beside the conversation, so the
+   panel becomes a band above it — same controls, same ids, no second copy. */
+@media (max-width: 1000px) {
+  .shell { flex-direction: column; }
+  .side {
+    position: static; width: 100%; max-height: none; overflow: visible;
+    border-right: 0; border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: start; gap: 18px 24px; padding: 16px 20px;
+  }
+  .side-facts { margin-top: 0; }
+}
+/* One column on a phone: two grid tracks there leave a block of empty space
+   beside every short section. */
+@media (max-width: 620px) { .side { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .ready { display: none; }
+  .comparison-head { align-items: flex-start; flex-direction: column; }
+  .hero { padding: 20px; }
+  .result-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .board-title { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 430px) { .result-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  :root { --barh: 52px; }
+  .side { padding: 14px 12px; gap: 16px; }
+  .bar-in { padding: 10px 12px; gap: 8px; }
+  .bar .sub { display: none; }
+  .bar h1 { font-size: 14px; }
+  .mark, .icon-btn { width: 32px; height: 32px; }
+  .log { padding: 24px 12px 10px; gap: 22px; }
+  .turn.bot { gap: 8px; }
+  .dot { width: 26px; height: 26px; }
+  .assistant-answer { padding: 16px; }
+  .assistant-lead { font-size: 16px; }
+  .composer { padding: 10px 8px calc(10px + env(safe-area-inset-bottom)); }
+  .box { padding-left: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="bar">
+    <div class="bar-in">
+      <div class="mark" aria-hidden="true">HI</div>
+      <div>
+        <h1>My Hybrid Assistant</h1>
+        <p class="sub">Personalised market-research chatbot</p>
+      </div>
+      <div class="grow"></div>
+      <span class="ready" id="demo-ready" role="status">Checking demo</span>
+      <button class="icon-btn" id="btn-theme" title="Switch light / dark"
+              aria-label="Switch light or dark theme" aria-pressed="true">◐</button>
+      <button class="icon-btn" id="btn-panel" aria-expanded="true"
+              aria-controls="side" aria-label="Show or hide your panel"
+              title="Show or hide your panel">☰</button>
+    </div>
+  </header>
+
+  <div class="shell">
+
+    <aside class="side" id="side" aria-label="Your panel">
+      <div class="who">
+        <div class="who-avatar" id="who-initial" aria-hidden="true">·</div>
+        <div class="who-text">
+          <strong id="who-name">there</strong>
+          <span id="who-profile"></span>
+        </div>
+      </div>
+
+      <section class="side-block">
+        <h2 class="side-title">Personalise</h2>
+        <label class="field"><span>Your name</span><input id="f-name" type="text" maxlength="40" autocomplete="name" placeholder="Your name"></label>
+        <label class="field"><span>Risk profile</span><select id="f-profile"></select></label>
+        <label class="field"><span>As-of date</span><select id="f-date"></select></label>
+        <p class="side-note" id="f-note"></p>
+      </section>
+
+      <section class="side-block">
+        <h2 class="side-title">Watchlist</h2>
+        <div class="stocks" id="stocks" data-testid="watchlist"></div>
+        <p class="side-note">Tap a company to ask about it as of the date above.</p>
+      </section>
+
+      <section class="side-block">
+        <h2 class="side-title">Ask about the research</h2>
+        <div class="side-links" id="side-research"></div>
+      </section>
+
+      <details class="side-fold" id="side-demos-block" hidden>
+        <summary>Guided examples</summary>
+        <div class="side-links" id="side-demos"></div>
+      </details>
+
+      <div class="side-facts" id="side-facts"></div>
+    </aside>
+
+    <div class="chat">
+      <main class="scroll"><div class="log" id="log" aria-live="polite"></div></main>
+
+      <div class="composer">
+        <div class="composer-in">
+          <div class="box">
+            <label class="sr" for="msg">Your question</label>
+            <textarea id="msg" rows="1" placeholder="Message your Hybrid assistant"></textarea>
+            <button class="send" id="send" title="Send" aria-label="Send question">↑</button>
+          </div>
+          <div class="foot">
+            <span id="status" role="status"></span>
+            <button id="clear">New chat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+/* ============================================================ helpers */
+const $ = s => document.querySelector(s);
+const el = (tag, cls, html) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html !== undefined) n.innerHTML = html;
+  return n;
+};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = v => (v * 100).toFixed(0) + '%';
+
+/* Minimal markdown: bold, italics, bullet lists, paragraphs. Input is escaped
+   first, so a model response can never inject markup into the page. */
+function md(src) {
+  const inline = t => esc(t)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+  const out = [];
+  let list = null;
+  for (const line of String(src || '').split('\n')) {
+    const bullet = line.match(/^\s*[-•]\s+(.*)$/);
+    if (bullet) {
+      list = list || [];
+      list.push('<li>' + inline(bullet[1]) + '</li>');
+      continue;
+    }
+    if (list) { out.push('<ul>' + list.join('') + '</ul>'); list = null; }
+    if (line.trim()) out.push('<p>' + inline(line) + '</p>');
+  }
+  if (list) out.push('<ul>' + list.join('') + '</ul>');
+  return out.join('');
+}
+
+const SHORT = {HYBRID: 'Hybrid', LLM_RAG: 'LLM + RAG', LLM: 'LLM only', ML: 'ML only'};
+/* The spoken name for each ticker. The server accepts both spellings, but a
+   watchlist reads as a watchlist only if it says Apple rather than AAPL. */
+const COMPANY = {AAPL: 'Apple', TSLA: 'Tesla', MSFT: 'Microsoft',
+                 NVDA: 'Nvidia', JPM: 'JP Morgan'};
+const SUGGESTIONS = [
+  'Can I buy Apple now?',
+  'Should I buy Tesla?',
+  'What does the Hybrid think about Microsoft?',
+];
+const RESEARCH_SUGGESTIONS = [
+  'Which model is most accurate?',
+  'How does the hybrid work?',
+  'Run the stability test',
+];
+
+let META = null, SCENARIOS = [];
+/* The case the page last showed. A follow-up such as "run the stability test"
+   means "on the thing we are looking at" — without this the test always ran on
+   the first ticker in the list, which is rarely the one being discussed. */
+let LAST = null, BUSY = false, RESEARCH_SEQ = 0;
+
+function personalName() {
+  return String($('#f-name').value || '').trim().slice(0, 40);
+}
+
+function savePreference(key, value) {
+  try { localStorage.setItem(key, value); } catch (_) {}
+}
+
+function setBusy(value) {
+  BUSY = value;
+  $('#send').disabled = value;
+  $('#log').setAttribute('aria-busy', String(value));
+  document.querySelectorAll('.chip, .primary, .stock, .ask-link').forEach(button => {
+    button.disabled = value;
+  });
+}
+
+/* The panel header: who the assistant is answering, and under which profile.
+   Kept in sync with the fields so the personalisation is visible without having
+   to read the answer to find out whether it took effect. */
+function syncWho() {
+  const name = personalName();
+  const select = $('#f-profile');
+  const profile = select.options[select.selectedIndex];
+  $('#who-initial').textContent = (name[0] || '·').toUpperCase();
+  $('#who-name').textContent = name || 'there';
+  $('#who-profile').textContent = profile ? `${profile.textContent} profile` : '';
+}
+
+/* Where the panel is a band above the conversation, a question asked from it
+   would otherwise leave the answer below the fold. The viewer's saved preference
+   is left alone: this closes the band, it does not change what they chose. */
+function closePanelOnNarrow() {
+  if (window.matchMedia('(max-width: 1000px)').matches) setPanel(false);
+}
+
+/** Highlights the watchlist box for the case the conversation is on. */
+function setActiveStock(ticker) {
+  document.querySelectorAll('#stocks .stock').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.ticker === ticker));
+  });
+}
+
+function requestError(message, retry) {
+  const {body} = shell();
+  const panel = el('div', 'say');
+  panel.appendChild(el('strong', '', 'The comparison did not finish.'));
+  panel.appendChild(el('p', '', esc(message)));
+  if (retry) {
+    const button = el('button', 'chip', 'Try this comparison again');
+    button.type = 'button';
+    button.onclick = retry;
+    panel.appendChild(button);
+  }
+  body.appendChild(panel);
+}
+
+/** The ticker named in a sentence, or null. Matched against the server's list. */
+function tickerIn(text) {
+  const low = String(text || '').toLowerCase();
+  const aliases = (META && META.aliases) || {};
+  for (const [tick, words] of Object.entries(aliases)) {
+    if (words.some(w => {
+      const safe = String(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp('\\b' + safe + '\\b').test(low);
+    })) return tick;
+  }
+  return null;
+}
+
+/* ============================================================ chrome */
+try {
+  const savedTheme = localStorage.getItem('hybrid-demo-theme');
+  if (savedTheme === 'light' || savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+} catch (_) { /* local storage can be disabled; dark remains the safe default */ }
+
+function syncThemeButton() {
+  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+  $('#btn-theme').setAttribute('aria-pressed', String(dark));
+  $('#btn-theme').title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+}
+
+$('#btn-theme').onclick = () => {
+  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const next = dark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('hybrid-demo-theme', next); } catch (_) {}
+  syncThemeButton();
+};
+syncThemeButton();
+
+/* The panel is open by default on a wide screen and closed on a phone, where it
+   would otherwise push the conversation off the first screen. Either way the
+   viewer's own choice is remembered. */
+function setPanel(open) {
+  $('#side').hidden = !open;
+  $('#btn-panel').setAttribute('aria-expanded', String(open));
+}
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem('hybrid-assistant-panel'); } catch (_) {}
+  const wide = !window.matchMedia('(max-width: 1000px)').matches;
+  setPanel(saved ? saved === 'open' : wide);
+})();
+$('#btn-panel').onclick = () => {
+  const open = $('#side').hidden;
+  setPanel(open);
+  savePreference('hybrid-assistant-panel', open ? 'open' : 'closed');
+};
+
+const box = $('#msg');
+box.addEventListener('input', () => {
+  box.style.height = 'auto';
+  box.style.height = Math.min(box.scrollHeight, 160) + 'px';
+});
+box.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
+});
+$('#send').onclick = submit;
+$('#clear').onclick = () => {
+  $('#log').innerHTML = '';
+  LAST = null;
+  setActiveStock(null);
+  greet();
+  box.focus();
+};
+
+/* ============================================================ boot */
+async function boot() {
+  try {
+    META = await (await fetch('/api/meta')).json();
+    SCENARIOS = await (await fetch('/api/scenarios')).json();
+  } catch (e) {
+    $('#status').textContent = 'Could not reach the server.';
+    return;
+  }
+
+  const fill = (sel, items, value) => {
+    const n = $(sel);
+    n.innerHTML = '';
+    items.forEach(i => {
+      const o = document.createElement('option');
+      o.value = i.value !== undefined ? i.value : i;
+      o.textContent = i.label !== undefined ? i.label : i;
+      n.appendChild(o);
+    });
+    if (value) n.value = value;
+  };
+
+  const dates = META.dates.length ? META.dates : ['2024-12-30'];
+  fill('#f-date', dates, dates[dates.length - 1]);
+  // Blank by default, so no name is put in the viewer's mouth. Empty rather than
+  // a space, so the field shows its placeholder until they type one.
+  let savedName = '', savedProfile = 'balanced';
+  try {
+    savedName = localStorage.getItem('hybrid-assistant-name') || savedName;
+    savedProfile = localStorage.getItem('hybrid-assistant-profile') || savedProfile;
+  } catch (_) {}
+  $('#f-name').value = savedName;
+  fill('#f-profile', META.profiles.map(p => ({value: p.key, label: p.label})), savedProfile);
+  $('#f-name').addEventListener('input', () => {
+    savePreference('hybrid-assistant-name', personalName());
+    syncWho();
+    const heading = $('#welcome-heading');
+    if (heading) heading.textContent = `Hi ${personalName() || 'there'}. What would you like to explore?`;
+  });
+  $('#f-profile').addEventListener('change', () => {
+    savePreference('hybrid-assistant-profile', $('#f-profile').value);
+    syncWho();
+  });
+  syncWho();
+
+  $('#f-note').textContent =
+    'Your name changes only the wording. Your risk profile changes only the action '
+    + 'guidance — never the underlying forecast.';
+
+  buildPanel();
+
+  const readiness = META.readiness || {};
+  const readyBadge = $('#demo-ready');
+  if (readiness.ready) {
+    readyBadge.classList.add('ok');
+    readyBadge.textContent = `Demo ready · ${readiness.mode || 'AI available'}`;
+    $('#status').textContent = readiness.offline_ready
+      ? 'Ready to chat. Guided AI answers are saved for a reliable presentation.'
+      : 'Live AI connected. Run a guided example once before presenting.';
+  } else {
+    readyBadge.classList.add('bad');
+    readyBadge.textContent = 'Demo needs attention';
+    $('#status').textContent = !META.ml_ready
+      ? 'ML predictions are missing.'
+      : 'Some guided AI responses are not saved locally; warm up the demo before presenting.';
+  }
+
+  greet();
+
+  const wanted = parseInt(new URLSearchParams(location.search).get('demo'));
+  if (wanted >= 1 && wanted <= SCENARIOS.length) askScenario(SCENARIOS[wanted - 1]);
+}
+
+/* ============================================================ the panel */
+function buildPanel() {
+  const stocks = $('#stocks');
+  stocks.innerHTML = '';
+  (META.tickers || []).forEach(tick => {
+    const b = el('button', 'stock');
+    b.type = 'button';
+    b.dataset.ticker = tick;
+    b.setAttribute('aria-pressed', 'false');
+    b.setAttribute('data-testid', `watchlist-${tick.toLowerCase()}`);
+    b.appendChild(el('b', '', esc(COMPANY[tick] || tick)));
+    b.appendChild(el('span', '', esc(tick)));
+    b.onclick = () => askTicker(tick);
+    stocks.appendChild(b);
+  });
+
+  const research = $('#side-research');
+  research.innerHTML = '';
+  RESEARCH_SUGGESTIONS.forEach(q => {
+    const b = el('button', 'ask-link', esc(q));
+    b.type = 'button';
+    b.onclick = () => { closePanelOnNarrow(); ask(q); };
+    research.appendChild(b);
+  });
+
+  const demos = $('#side-demos');
+  demos.innerHTML = '';
+  SCENARIOS.forEach((s, i) => {
+    const b = el('button', 'ask-link', `${i + 1}. ${esc(s.label)}`);
+    b.type = 'button';
+    b.title = `${s.question} · ${s.date}`;
+    b.onclick = () => { closePanelOnNarrow(); askScenario(s); };
+    demos.appendChild(b);
+  });
+  $('#side-demos-block').hidden = !SCENARIOS.length;
+
+  const facts = $('#side-facts');
+  facts.innerHTML = '';
+  [['Forecast horizon', `${META.predict_days} trading days`],
+   ['Evidence corpus', `${META.n_evidence} items`],
+   ['Systems compared', '4']]
+    .forEach(([k, v]) => facts.appendChild(
+      el('div', '', `<span>${esc(k)}</span><b>${esc(v)}</b>`)));
+}
+
+/** A watchlist tap. The ticker is sent explicitly rather than left to be read
+    out of the sentence, so a box can never resolve to a different company. */
+function askTicker(tick) {
+  if (BUSY) return;
+  const question = `Should I buy ${COMPANY[tick] || tick} now?`;
+  closePanelOnNarrow();
+  setActiveStock(tick);
+  mine(question);
+  send({message: question, ticker: tick, date: $('#f-date').value,
+        profile: $('#f-profile').value, name: personalName()}, null);
+}
+
+function greet() {
+  const {turn, body} = shell();
+  turn.id = 'welcome-turn';
+  const hero = el('section', 'panel hero');
+  hero.setAttribute('data-testid', 'demo-intro');
+  hero.innerHTML =
+    `<div class="eyebrow">Your personalised research assistant</div>
+     <h2 id="welcome-heading">Hi ${esc(personalName() || 'there')}. What would you like to explore?</h2>
+     <p class="hero-copy">Ask naturally about Apple, Tesla, Microsoft, Nvidia or JP Morgan —
+       or tap one in your watchlist. I will give you one clear Hybrid-led answer for your
+       selected risk profile, and the four underlying research systems stay one click away
+       whenever you want to inspect them.</p>`;
+
+  const actions = el('div', 'hero-actions');
+  const start = el('button', 'primary', 'Try a guided question');
+  start.type = 'button';
+  start.setAttribute('data-testid', 'run-demo');
+  start.onclick = () => SCENARIOS.length && askScenario(SCENARIOS[0]);
+  actions.appendChild(start);
+  actions.appendChild(el('span', 'hero-note',
+    (META.readiness && META.readiness.offline_ready)
+      ? 'Uses the saved, auditable AI responses from the evaluation.'
+      : 'Uses the connected AI service.'));
+  hero.appendChild(actions);
+  body.appendChild(hero);
+
+  const chips = el('div', 'chips');
+  SUGGESTIONS.forEach(q => {
+    const b = el('button', 'chip', esc(q));
+    b.onclick = () => ask(q);
+    chips.appendChild(b);
+  });
+  body.appendChild(el('div', 'section-label', 'Try asking'));
+  body.appendChild(chips);
+
+  /* The research prompts and the guided examples live in the panel now, where
+     they stay reachable after the first answer instead of scrolling away with
+     the greeting. */
+}
+
+/* ============================================================ turns */
+function shell() {
+  const turn = el('div', 'turn bot');
+  turn.appendChild(el('div', 'dot', 'T'));
+  const body = el('div', 'body');
+  turn.appendChild(body);
+  $('#log').appendChild(turn);
+  return {turn, body};
+}
+
+function mine(text) {
+  const welcome = $('#welcome-turn');
+  if (welcome) welcome.remove();
+  const turn = el('div', 'turn me');
+  turn.appendChild(el('div', 'body', esc(text)));
+  $('#log').appendChild(turn);
+  turn.scrollIntoView({behavior: 'smooth', block: 'end'});
+}
+
+function submit() {
+  const text = box.value.trim();
+  if (!text) return;
+  box.value = '';
+  box.style.height = 'auto';
+  ask(text);
+}
+
+function ask(text) {
+  if (BUSY) return;
+  mine(text);
+  /* The stability test is its own endpoint, so the phrase routes client-side.
+     Everything else is classified by the server. */
+  if (/stabilit|same question|repeat|consisten|determinis/i.test(text)) return runStability(text);
+  send({message: text, date: $('#f-date').value, profile: $('#f-profile').value,
+        name: personalName()}, null);
+}
+
+function askScenario(s) {
+  if (BUSY) return;
+  $('#f-date').value = s.date;
+  mine(`${s.question} (${s.date})`);
+  send({message: s.question, ticker: s.ticker, date: s.date,
+        profile: $('#f-profile').value, name: personalName()}, s);
+}
+
+async function send(payload, scenario) {
+  setBusy(true);
+  const {turn, body} = shell();
+  const thinking = el('div', 'say thinking', 'Reviewing your question');
+  body.appendChild(thinking);
+  turn.scrollIntoView({behavior: 'smooth', block: 'end'});
+  const started = Date.now();
+  const phases = ['Reviewing your question', 'Consulting the research systems', 'Preparing your answer'];
+  let phase = 0;
+  const phaseTimer = setInterval(() => {
+    phase = Math.min(phase + 1, phases.length - 1);
+    thinking.textContent = phases[phase];
+  }, 450);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 45000);
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload), signal: controller.signal});
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || `Server returned ${r.status}`);
+    // Cached thesis responses can return in a few milliseconds. A short, honest
+    // processing state makes the hand-off readable without pretending a live API
+    // call occurred; the source label on the answer still says exactly what ran.
+    const remaining = Math.max(0, 1200 - (Date.now() - started));
+    if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
+    turn.remove();
+    render(d, scenario);
+  } catch (e) {
+    turn.remove();
+    const message = e.name === 'AbortError'
+      ? 'The request took longer than 45 seconds. The guided examples should use saved AI responses; check the demo status and try again.'
+      : e.message;
+    requestError(message, () => send(payload, scenario));
+  } finally {
+    clearInterval(phaseTimer);
+    clearTimeout(timer);
+    setBusy(false);
+    box.focus();
+  }
+}
+
+/* ============================================================ rendering */
+function render(d, scenario) {
+  const {turn, body} = shell();
+
+  if (d.error) {
+    body.appendChild(el('div', 'say', 'Sorry — ' + esc(d.error)));
+    turn.scrollIntoView({behavior: 'smooth', block: 'start'});
+    return;
+  }
+
+  if (d.type === 'information') {
+    body.appendChild(el('div', 'say', md(d.answer)));
+    if (d.evidence && d.evidence.length) body.appendChild(evidence(d.evidence, []));
+    if (d.hint) body.appendChild(el('div', 'panel flat fine', md(d.hint)));
+    turn.scrollIntoView({behavior: 'smooth', block: 'start'});
+    return;
+  }
+
+  LAST = {ticker: d.ticker, date: d.date};
+  setActiveStock(d.ticker);
+
+  const hybrid = d.arms.find(a => a.key === 'HYBRID')
+    || d.arms.find(a => a.reasoning) || d.arms[0];
+  const a = d.assistant_response || {
+    lead: personalName()
+      ? `${personalName()}, here is the Hybrid view on ${d.ticker}.`
+      : `Here is the Hybrid view on ${d.ticker}.`,
+    decision: d.advice ? `For your ${d.advice.profile.toLowerCase()} profile: ${d.advice.action}.` : '',
+    rationale: hybrid.reasoning || '',
+    cross_check: d.note || '',
+    source: hybrid.response_source || 'Research system response',
+    action: d.advice && d.advice.action,
+    profile: d.advice && d.advice.profile,
+  };
+
+  /* One natural assistant response is the default experience. The action is a
+     personalised presentation layer; the research forecast itself is unchanged. */
+  const answer = el('article', 'say assistant-answer');
+  answer.setAttribute('data-testid', 'assistant-answer');
+  answer.appendChild(el('p', 'assistant-lead', esc(a.lead)));
+  if (a.action) answer.appendChild(el('div', 'assistant-action', esc(a.action)));
+  if (a.decision) answer.appendChild(el('p', 'assistant-decision', esc(a.decision)));
+  if (a.rationale) answer.appendChild(el('p', 'assistant-rationale', esc(a.rationale)));
+  if (a.cross_check) answer.appendChild(el('p', 'assistant-rationale', esc(a.cross_check)));
+
+  const meta = el('div', 'message-meta');
+  meta.appendChild(el('span', '', `${esc(d.ticker)} · ${esc(d.date)} · ${d.horizon}-day view`));
+  if (a.profile) meta.appendChild(el('span', '', `${esc(a.profile)} profile`));
+  meta.appendChild(el('span', 'source', esc(a.source)));
+  answer.appendChild(meta);
+  body.appendChild(answer);
+
+  /* The thesis comparison remains fully inspectable, but it no longer competes
+     with the chatbot answer or overwhelms a first-time viewer. */
+  const research = el('details', 'research-comparison');
+  research.setAttribute('data-testid', 'research-details');
+  research.appendChild(el('summary', '', 'Compare the four research systems'));
+  const researchBody = el('div', 'research-content');
+  researchBody.appendChild(el('p', 'research-intro',
+    `All four systems used the same ${esc(d.ticker)} snapshot from ${esc(d.date)} and the same ${d.horizon}-trading-day horizon.`));
+  if (scenario) researchBody.appendChild(el('div', 'panel flat fine',
+    `<strong>${esc(scenario.label)}.</strong> ${esc(scenario.context)}`));
+
+  const grid = el('div', 'grid4');
+  grid.setAttribute('data-testid', 'response-grid');
+  d.arms.forEach(arm => grid.appendChild(researchCard(arm)));
+  researchBody.appendChild(grid);
+  researchBody.appendChild(el('p', 'research-conclusion',
+    '<strong>Thesis result:</strong> Hybrid ranked first overall, followed by LLM + RAG, LLM only, then ML only.'));
+  if (d.note) researchBody.appendChild(el('div', 'panel flat fine',
+    '<strong>Why the systems differ.</strong> ' + esc(d.note)));
+  if (d.evidence && d.evidence.length) {
+    const rag = d.arms.find(arm => arm.key === 'LLM_RAG');
+    researchBody.appendChild(evidence(d.evidence, rag ? rag.evidence_cited : []));
+  }
+  research.appendChild(researchBody);
+  // Presentation shortcut: ?demo=1&research=1 opens the supporting systems
+  // automatically, while an ordinary chat keeps them out of the way.
+  if (new URLSearchParams(location.search).get('research') === '1') research.open = true;
+  body.appendChild(research);
+
+  turn.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+/* The optional research view keeps the original model prose and its provenance.
+   Scores, gauges and mechanical forecast blocks stay out of the conversation. */
+function researchCard(a) {
+  const lead = a.key === 'HYBRID';
+  const c = el('article', 'card' + (lead ? ' lead' : ''));
+  c.setAttribute('data-system', a.key);
+  c.setAttribute('data-testid', `response-card-${String(a.key).toLowerCase()}`);
+
+  const head = el('div', 'card-head');
+  head.appendChild(el('h4', 'card-name', esc(SHORT[a.key] || a.key)));
+  if (lead) head.appendChild(el('span', 'best-label', 'Used for assistant reply'));
+  c.appendChild(head);
+  if (a.adds) c.appendChild(el('div', 'card-adds', esc(a.adds)));
+  if (a.response_source) c.appendChild(el('div', 'card-source', esc(a.response_source)));
+
+  c.appendChild(el('div', 'section-label', 'Response from this system'));
+  const why = el('div', 'why');
+  if (a.reasoning) {
+    const textId = `research-response-${String(a.key).toLowerCase()}-${++RESEARCH_SEQ}`;
+    const responseText = el('div', 'txt', esc(a.reasoning));
+    responseText.id = textId;
+    why.appendChild(responseText);
+    if (String(a.reasoning).length > 240) {
+      const more = el('button', 'more', 'Read full response');
+      more.type = 'button';
+      more.setAttribute('aria-controls', textId);
+      more.setAttribute('aria-expanded', 'false');
+      more.onclick = () => {
+        why.classList.toggle('open');
+        const open = why.classList.contains('open');
+        more.setAttribute('aria-expanded', String(open));
+        more.textContent = open ? 'Show less' : 'Read full response';
+      };
+      why.appendChild(more);
+    }
+  } else {
+    why.innerHTML = '<span class="none">Numeric pattern prediction only — this system '
+      + 'does not generate a written response.</span>';
+  }
+  c.appendChild(why);
+
+  return c;
+}
+
+function evidence(items, cited) {
+  const d = el('details', 'ev');
+  d.appendChild(el('summary', '',
+    `See the ${items.length} evidence item${items.length === 1 ? '' : 's'} the AI was allowed to read`));
+  items.forEach(e => {
+    const used = (cited || []).includes(e.id);
+    const row = el('div', 'ev-row' + (used ? ' used' : ''));
+    row.innerHTML = `<div>${esc(e.text)}</div><div class="ev-meta">${esc(e.date)} · `
+      + `${e.age_days} days before the question · ${esc(e.source)}`
+      + `${used ? ' · <strong>cited by the AI</strong>' : ''}</div>`;
+    d.appendChild(row);
+  });
+  return d;
+}
+
+/* ============================================================ stability */
+async function runStability(text) {
+  if (BUSY) return;
+  setBusy(true);
+  /* The stability control always uses the curated five-run shock case whose
+     responses are already saved.  That makes the presentation reproducible and
+     avoids turning one click into five unverified network calls. */
+  const showcase = META.stability_demo || {ticker: 'TSLA', date: '2022-05-06'};
+  const ticker = showcase.ticker;
+  const date = showcase.date;
+
+  const {turn, body} = shell();
+  body.appendChild(el('div', 'say thinking',
+    `Sending the identical prompt about ${esc(ticker)} five times…`));
+  turn.scrollIntoView({behavior: 'smooth', block: 'end'});
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 45000);
+
+  try {
+    const r = await fetch('/api/stability', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ticker, date, runs: 5, use_rag: true}),
+      signal: controller.signal});
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || `Server returned ${r.status}`);
+    turn.remove();
+    const out = shell();
+    if (d.error) {
+      out.body.appendChild(el('div', 'say', 'Sorry — ' + esc(d.error)));
+      return;
+    }
+    renderStability(d, out.body);
+    out.turn.scrollIntoView({behavior: 'smooth', block: 'start'});
+  } catch (e) {
+    turn.remove();
+    const message = e.name === 'AbortError'
+      ? 'The five-run stability check took longer than 45 seconds.'
+      : e.message;
+    requestError(message, () => runStability(text));
+  } finally {
+    clearTimeout(timer);
+    setBusy(false);
+  }
+}
+
+function strip(title, dirs, probs, note) {
+  const p = el('div', 'panel');
+  p.appendChild(el('div', 'card-name', esc(title)));
+  const runs = el('div', 'runs');
+  runs.style.margin = '8px 0';
+  dirs.forEach((dir, i) => {
+    const r = el('div', 'run',
+      `${dir === 'UP' ? '↑' : '↓'} ${dir}<br>`
+      + `<span style="font-weight:400;color:var(--ink-3)">`
+      + `${probs[i] !== undefined && probs[i] !== null ? probs[i].toFixed(2) : ''}</span>`);
+    r.style.color = dir === 'UP' ? 'var(--up)' : 'var(--down)';
+    runs.appendChild(r);
+  });
+  p.appendChild(runs);
+  p.appendChild(el('div', 'fine', esc(note)));
+  return p;
+}
+
+function renderStability(d, body) {
+  body.appendChild(el('div', 'say', md(
+    `The identical prompt about **${d.ticker}** on **${d.date}**, sent `
+    + `${d.llm.runs} times. The ML model is a fixed function of its input, so it cannot `
+    + `move; the LLM is sampled, so it can disagree with itself on input it has already `
+    + `seen. That is the fair way to compare a deterministic system with one that is not.`)));
+
+  if (d.ml) body.appendChild(strip('ML model (LSTM)', d.ml.directions,
+    Array(d.ml.directions.length).fill(d.ml.p_up),
+    `Identical every time. p(up) = ${d.ml.p_up}, standard deviation 0.000.`));
+
+  body.appendChild(strip('LLM + RAG', d.llm.directions, d.llm.probs,
+    `Agreement ${pct(d.llm.agreement)} · mean p(up) ${d.llm.p_mean} · standard deviation ${d.llm.p_std}.`));
+
+  if (d.hybrid) {
+    const damped = d.llm.p_std > 0
+      ? (d.hybrid.p_std / d.llm.p_std).toFixed(2) : null;
+    body.appendChild(strip('Hybrid', d.hybrid.directions, d.hybrid.probs,
+      `Agreement ${pct(d.hybrid.agreement)} · standard deviation ${d.hybrid.p_std}`
+      + (damped ? ` — ${damped}× the LLM's movement, because the ML half cannot move.`
+                : '.')));
+  }
+
+  const flipped = d.llm.flipped;
+  const p = el('div', 'panel flat');
+  let verdict = flipped
+    ? 'Same prompt, same temperature, a different answer. This is why a single LLM '
+      + 'accuracy figure is a sample rather than a property of the system.'
+    : 'Stable on this input. Across the full evaluation the LLM flipped on 3.3% of '
+      + 'cases — all of them in shock periods. Try a shock date.';
+  /* The honest result, and it is not the flattering one: over the full evaluation
+     the hybrid halves the movement but flips on exactly the same cases. */
+  if (d.hybrid) {
+    verdict += d.hybrid.flipped
+      ? ' The hybrid moved less, but not less enough — it flipped too. Blending damps '
+        + 'the size of a disagreement, not the fact of one.'
+      : ' The hybrid held, as it does on most inputs. Over the full evaluation, though, '
+        + 'it flipped on the same 3.3% of cases the LLM did: halving the movement is '
+        + 'not the same as inheriting the ML model’s determinism.';
+  }
+  p.innerHTML = `<div class="pills"><span class="pill ${flipped ? 'bad' : 'ok'}">`
+    + `${flipped ? '! The LLM contradicted itself' : '✓ The LLM agreed with itself every time'}`
+    + `</span></div><div class="fine" style="margin-top:8px">` + verdict + '</div>';
+  body.appendChild(p);
+}
+
+boot();
+</script>
+</body>
+</html>

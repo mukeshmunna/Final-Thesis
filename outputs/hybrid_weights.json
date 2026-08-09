@@ -1,0 +1,13 @@
+{
+ "method": "calibrated_logit_pool_v2",
+ "weights": {
+  "CALM": 0.492,
+  "SHOCK": 0.487
+ },
+ "thresholds": {
+  "ML": 0.59,
+  "LLM": 0.6,
+  "LLM_RAG": 0.6,
+  "HYBRID": 0.5
+ }
+}

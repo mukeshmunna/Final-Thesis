@@ -1,0 +1,25 @@
+{
+ "n_holdout": 300,
+ "honest": {
+  "ML": 52.67,
+  "LLM": 56.0,
+  "LLM_RAG": 57.67,
+  "HYBRID": 58.33
+ },
+ "refit_on_holdout": {
+  "ML": 56.0,
+  "LLM": 57.0,
+  "LLM_RAG": 58.67
+ },
+ "best_blend_fitted_on_holdout": 60.33,
+ "best_blend_at": {
+  "w_ml": 0.25,
+  "w_llm": 0.25,
+  "w_llm_rag": 0.5,
+  "cut": 0.5
+ },
+ "oracle_best_arm_per_row": 82.67,
+ "all_arms_wrong_pct": 17.33,
+ "baseline_always_up": 54.33,
+ "baseline_always_down": 45.67
+}
