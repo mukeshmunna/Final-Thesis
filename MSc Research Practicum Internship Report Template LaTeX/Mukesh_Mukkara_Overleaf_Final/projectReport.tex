@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+
+%% -------------------------------
+%% NCI MSc Research Project Template
+%% -------------------------------
+
+\newif\ifindustry
+\industryfalse
+
+\usepackage[british,UKenglish]{babel}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[sort]{natbib}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{lastpage}
+\usepackage{datetime}
+\usepackage{textcomp}
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{microtype}
+\captionsetup{font=small,labelfont=bf,skip=5pt,belowskip=3pt}
+\renewcommand{\arraystretch}{1.14}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.80}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.80}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+\setlength{\bibsep}{1pt plus 0.2ex}
+\renewcommand{\bibfont}{\footnotesize}
+\usepackage[bookmarks=true,hidelinks]{hyperref}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\graphicspath{{./figures/}}
+
+\newcommand{\mytype}{MSc Research Practicum (Part 2)}
+\newcommand{\mystream}{MSc in Artificial Intelligence}
+\newcommand{\myname}{Mukesh Mukkara}
+\newcommand{\studentID}{x24226432}
+\newcommand{\mytitle}{Hybrid Stock Forecasting: Large Language Model with Retrieval, and Combining It with an LSTM}
+\newcommand{\supervisor}{[Supervisor Name]}
+\newcommand{\submissiondate}{[Submission Date]}
+\newcommand{\supervisortwo}{}
+
+\hypersetup{
+ pdfauthor={\myname},
+ pdftitle={\mytitle},
+ pdfsubject={\mytype},
+ pdfkeywords={Artificial Intelligence, equity direction forecasting, LSTM, retrieval-augmented generation}
+}
+
+\setlength{\marginparwidth}{20mm}
+\newcommand{\margtodo}{\marginpar{\textbf{\textcolor{red}{ToDo}}}{}}
+\newcommand{\todo}[1]{{\textbf{\textcolor{red}{(\margtodo{}#1)}}}{}}
+
+\hyphenation{fore-cast-ing re-triev-al aug-men-ta-tion de-ter-min-is-tic cal-i-bra-tion hal-lu-ci-na-tion re-pro-duc-i-ble per-son-al-i-za-tion}
+\emergencystretch=1.5em
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\include{titlepage}
+\hypersetup{pageanchor=true}
+
+\title{\mytitle}
+\author{\myname \\ Student ID: \studentID}
+\date{}
+\maketitle
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+\input{text/abstract}
+\input{text/introduction}
+\input{text/relatedwork}
+\input{text/methodology}
+\input{text/design}
+\input{text/implementation}
+\input{text/outputs}
+\input{text/evaluation}
+\input{text/conclusion}
+
+\bibliographystyle{dcu}
+\bibliography{refs}
+
+\end{document}

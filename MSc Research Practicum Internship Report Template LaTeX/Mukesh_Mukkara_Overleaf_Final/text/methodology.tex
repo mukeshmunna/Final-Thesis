@@ -1,0 +1,226 @@
+\section{Research Methodology}\label{sec:methodology}
+
+This research follows a controlled experimental methodology to evaluate
+the contribution of different components in a hybrid stock market
+forecasting system. Four forecasting models are developed, where each
+successive model differs from the previous one by only a single
+architectural modification. All models are tested using the same
+dataset, identical prediction dates, and the same evaluation samples to
+ensure a fair comparison. This section describes the dataset, data
+splitting strategy, forecasting models, retrieval process, and
+evaluation metrics used throughout the study.
+
+\subsection{Dataset}\label{sec:dataset}
+
+Historical daily market data for five U.S. stocks---\textbf{NVIDIA
+(NVDA), Apple (AAPL), Tesla (TSLA), JPMorgan Chase (JPM), and Microsoft
+(MSFT)}---were collected using the \textbf{yfinance} library. The
+dataset covers the period from \textbf{1 January 2019 to 31 December
+2024}, providing \textbf{1,509 trading days} for each company. Daily
+values of the \textbf{CBOE Volatility Index (VIX)} were also collected
+over the same period to represent overall market conditions.
+
+The selected companies represent different market behaviours rather than
+a single market segment. For example, NVIDIA experienced exceptionally
+high returns and volatility during the study period, whereas JPMorgan
+showed comparatively lower growth and more stable price movements.
+Including stocks with different volatility characteristics allows the
+proposed framework to be evaluated under diverse market conditions
+rather than only during stable periods.
+
+The prediction task is formulated as a \textbf{binary classification
+problem}. For each trading day, the model predicts whether the stock
+closing price will increase or decrease after \textbf{five trading
+days}. A value of \textbf{1} represents an increase in price, while
+\textbf{0} represents a decrease. Predicting market direction is
+considered more suitable for trading decisions than forecasting the
+exact future price because stock returns are generally centred around
+zero and small price changes can dominate regression-based evaluation.
+
+To represent market behaviour, \textbf{22 technical features} are
+generated for each stock on every trading day. These include the
+Relative Strength Index (RSI), Moving Average Convergence Divergence
+(MACD) and its signal line, moving-average ratios, Bollinger Band
+indicators, historical returns over different time windows, short-term
+volatility, volume ratio, Average True Range (ATR), VIX-related
+indicators, and features describing the relationship between each stock
+and an equally weighted portfolio of all five stocks. All features are
+calculated exclusively from historical information available on or
+before the prediction date, ensuring that no future information is
+introduced into the model.
+
+\begin{quote}
+\textbf{Market Regime Classification}
+\end{quote}
+
+To analyse model performance under different market conditions, each
+trading day is assigned to one of two market regimes based on the daily
+VIX value. Days with a \textbf{VIX value greater than 25} are classified
+as \textbf{SHOCK} periods, while all remaining days are classified as
+\textbf{CALM} periods. Since the VIX value is known on the same trading
+day, this classification introduces no future information. Model
+performance is reported separately for both regimes because prediction
+difficulty and baseline market behaviour differ significantly between
+stable and highly volatile periods.
+
+\subsection{Data Splitting Protocol}\label{sec:data-splitting}
+
+The LSTM forecasting model is trained using a \textbf{walk-forward
+validation} strategy consisting of three chronological folds. For every
+testing period, only historical observations occurring before the
+prediction date are used for model training. A \textbf{five-day embargo
+period} is inserted between the training and testing datasets to prevent
+overlap between training labels and future test labels, thereby
+eliminating potential information leakage.
+
+Within each training fold, the most recent \textbf{15\%} of the training
+data is reserved as a validation set. This validation data is used for
+early stopping and decision-threshold selection. Random shuffling is
+intentionally avoided because it would violate the temporal ordering of
+financial data and could introduce unrealistic validation results.
+Feature normalization is performed using parameters computed only from
+the training data, and these parameters are subsequently applied to the
+validation and testing datasets.
+
+For the comparative evaluation of the four forecasting systems,
+\textbf{60 trading dates} are selected from the walk-forward testing
+period. Predictions are generated for all five stocks on each selected
+date, resulting in \textbf{300 independent evaluation samples},
+including \textbf{190 calm-market cases} and \textbf{110 shock-market
+cases}. An additional tuning dataset containing \textbf{200 separate
+samples} is reserved for selecting model thresholds and fusion
+parameters. This tuning dataset is completely independent of the final
+evaluation dataset to ensure that the reported experimental results
+remain unbiased.
+
+\subsection{Forecasting Models}\label{sec:forecasting-models}
+
+The proposed framework evaluates four forecasting approaches under
+identical experimental conditions.
+
+\begin{itemize}
+\item
+  \textbf{Model 1 (ML):} A two-layer LSTM network processes the previous
+  \textbf{60 trading days} of the 22 engineered features and outputs the
+  probability of an upward market movement.
+\item
+  \textbf{Model 2 (LLM):} Gemini 2.5 Flash is provided with the same
+  market information converted into structured textual format. The
+  prompt includes normalized closing prices, RSI, short- and medium-term
+  returns, volatility, trading volume ratio, and MACD ratio. The model
+  is required to predict market direction, provide a confidence score,
+  generate a brief explanation, and report the numerical values used
+  during reasoning.
+\item
+  \textbf{Model 3 (LLM + RAG):} This model uses the same prompt as the
+  standalone LLM but additionally receives relevant historical evidence
+  retrieved from an external knowledge base before generating its
+  prediction.
+\item
+  \textbf{Model 4 (Hybrid):} The final model combines the prediction
+  probabilities produced by the LSTM and the grounded language model
+  through a calibrated fusion strategy.
+\end{itemize}
+
+\begin{quote}
+\textbf{Stock Anonymization}
+\end{quote}
+
+To minimise the possibility of the language model relying on memorized
+historical knowledge, company names are replaced with anonymous
+identifiers such as \textbf{"Stock A"} during inference. Since Gemini
+has been trained on publicly available information covering the
+evaluation period, this anonymization helps ensure that predictions are
+based on the provided market data rather than previously memorized
+events. The effectiveness of this strategy is verified experimentally
+and discussed in the evaluation section.
+
+\begin{quote}
+\textbf{Evidence Retrieval}
+\end{quote}
+
+The retrieval system uses a manually verifiable knowledge corpus
+containing \textbf{252 evidence entries}. The corpus consists of three
+categories: documented macroeconomic events, automatically generated
+market stress events triggered by high VIX values, and automatically
+detected large movements in the equally weighted stock portfolio. Except
+for the manually collected macroeconomic events, all remaining evidence
+is generated directly from historical market data.
+
+Relevant evidence is retrieved using \textbf{TF-IDF cosine similarity}
+combined with a time-based weighting function that gradually reduces the
+importance of older documents within a \textbf{90-day} historical
+window. The four most relevant evidence items are provided to the
+language model for each prediction. To eliminate look-ahead bias, only
+documents published on or before the prediction date are considered
+during retrieval.
+
+\subsection{Evaluation Metrics}\label{sec:evaluation-metrics}
+
+The proposed forecasting framework is evaluated using five complementary
+experiments.
+
+\begin{quote}
+\textbf{Prediction Accuracy and Statistical Significance}
+\end{quote}
+
+Prediction accuracy is estimated using \textbf{2,000 bootstrap
+resamples} generated at the date level rather than the individual
+prediction level because multiple stock predictions made on the same day
+are statistically correlated. Confidence intervals are calculated using
+these bootstrap samples, while pairwise comparisons between forecasting
+models are performed using the \textbf{exact McNemar test}, which is
+appropriate for paired classification results. Probability calibration
+is evaluated using the \textbf{Brier Score}.
+
+\begin{quote}
+\textbf{Hallucination Analysis}
+\end{quote}
+
+The reliability of language model outputs is evaluated through an
+automated hallucination assessment. The numerical values reported by the
+language model are compared directly with the input values supplied in
+the prompt. Incorrect numerical values are recorded, while scale-related
+errors are classified separately as unit errors. The evaluation also
+identifies invented evidence citations and checks whether the language
+model reveals the actual company names despite anonymization. The entire
+evaluation process is fully automated and does not require human
+judgement or another language model.
+
+\begin{quote}
+\textbf{Prediction Stability}
+\end{quote}
+
+Model consistency is measured by submitting the same prompt \textbf{five
+times} for each of \textbf{30 evaluation cases}. Differences between
+repeated predictions are recorded to quantify output variability. This
+experiment evaluates the stability of each forecasting system rather
+than assuming deterministic behaviour simply because the language model
+operates with a temperature value of zero.
+
+\begin{quote}
+\textbf{Response Quality Assessment}
+\end{quote}
+
+The usefulness of each generated response is evaluated using a
+\textbf{17-criterion scoring framework} covering four dimensions:
+\textbf{grounding (30 points), personalization (25 points), helpfulness
+(25 points), and safety (20 points)}. The evaluation is performed using
+deterministic rule-based scoring instead of language-model-based judges
+to ensure complete reproducibility. Only text generated by the
+forecasting models is evaluated, while fixed template text used by the
+hybrid system is excluded from scoring.
+
+\begin{quote}
+\textbf{Ceiling Analysis}
+\end{quote}
+
+Finally, an upper-bound analysis is performed to estimate the maximum
+achievable performance for the forecasting task. Four performance bounds
+are computed using the same evaluation dataset, including threshold
+optimization on the testing data, optimized hybrid combinations, and an
+ideal oracle that always selects the correct prediction among the four
+models. Although the oracle cannot be implemented in practice because it
+requires knowledge of the true outcome, it provides a theoretical upper
+limit for evaluating the effectiveness of the proposed forecasting
+approaches.
