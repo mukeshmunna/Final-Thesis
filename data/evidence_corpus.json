@@ -1,0 +1,1766 @@
+[
+ {
+  "id": "vix_2019-01-02",
+  "date": "2019-01-02",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2019-01-03",
+  "date": "2019-01-03",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2019-01-03",
+  "date": "2019-01-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2019-01-04",
+  "date": "2019-01-04",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 21.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2019-01-04",
+  "date": "2019-01-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2019-05-13",
+  "date": "2019-05-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2019-06-04",
+  "date": "2019-06-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2019-08-01",
+  "date": "2019-08-01",
+  "type": "macro",
+  "text": "US announces a new round of tariffs on Chinese imports, widening the trade dispute.",
+  "source": "US Trade Representative"
+ },
+ {
+  "id": "move_2019-08-05",
+  "date": "2019-08-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2019-08-14",
+  "date": "2019-08-14",
+  "type": "macro",
+  "text": "The 2-year/10-year Treasury yield curve inverts for the first time since 2007, a signal markets read as a recession warning.",
+  "source": "US Treasury yield data"
+ },
+ {
+  "id": "move_2019-08-14",
+  "date": "2019-08-14",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2019-08-23",
+  "date": "2019-08-23",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2019-10-30",
+  "date": "2019-10-30",
+  "type": "macro",
+  "text": "The Federal Reserve cuts the target rate to 1.50-1.75%, its third cut of the year.",
+  "source": "Federal Reserve FOMC statement"
+ },
+ {
+  "id": "macro_2020-01-30",
+  "date": "2020-01-30",
+  "type": "macro",
+  "text": "The World Health Organization declares the coronavirus outbreak a Public Health Emergency of International Concern.",
+  "source": "WHO statement"
+ },
+ {
+  "id": "move_2020-02-03",
+  "date": "2020-02-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-02-04",
+  "date": "2020-02-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2020-02-24",
+  "date": "2020-02-24",
+  "type": "macro",
+  "text": "Equity markets fall sharply as coronavirus cases spread beyond China; volatility rises quickly.",
+  "source": "Market data"
+ },
+ {
+  "id": "vix_2020-02-24",
+  "date": "2020-02-24",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-02-24",
+  "date": "2020-02-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-02-25",
+  "date": "2020-02-25",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-02-27",
+  "date": "2020-02-27",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 6.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-02",
+  "date": "2020-03-02",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 7.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-03",
+  "date": "2020-03-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-04",
+  "date": "2020-03-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-05",
+  "date": "2020-03-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-06",
+  "date": "2020-03-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-09",
+  "date": "2020-03-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 9.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-10",
+  "date": "2020-03-10",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 7.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2020-03-11",
+  "date": "2020-03-11",
+  "type": "macro",
+  "text": "The World Health Organization declares COVID-19 a pandemic.",
+  "source": "WHO statement"
+ },
+ {
+  "id": "move_2020-03-11",
+  "date": "2020-03-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-12",
+  "date": "2020-03-12",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 9.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-13",
+  "date": "2020-03-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 12.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2020-03-15",
+  "date": "2020-03-15",
+  "type": "macro",
+  "text": "The Federal Reserve cuts rates to near zero and restarts large-scale asset purchases in an emergency weekend action.",
+  "source": "Federal Reserve FOMC statement"
+ },
+ {
+  "id": "macro_2020-03-16",
+  "date": "2020-03-16",
+  "type": "macro",
+  "text": "The VIX closes at 82.69, its highest close on record. Trading halts are triggered on major US indices.",
+  "source": "CBOE data"
+ },
+ {
+  "id": "move_2020-03-16",
+  "date": "2020-03-16",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 14.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-17",
+  "date": "2020-03-17",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-18",
+  "date": "2020-03-18",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 6.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-20",
+  "date": "2020-03-20",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2020-03-23",
+  "date": "2020-03-23",
+  "type": "macro",
+  "text": "The Federal Reserve announces open-ended asset purchases and new credit facilities to support market functioning.",
+  "source": "Federal Reserve statement"
+ },
+ {
+  "id": "move_2020-03-24",
+  "date": "2020-03-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 10.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-26",
+  "date": "2020-03-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-27",
+  "date": "2020-03-27",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-03-30",
+  "date": "2020-03-30",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-01",
+  "date": "2020-04-01",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-06",
+  "date": "2020-04-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 7.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-14",
+  "date": "2020-04-14",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-21",
+  "date": "2020-04-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-22",
+  "date": "2020-04-22",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-04-29",
+  "date": "2020-04-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-05-01",
+  "date": "2020-05-01",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-06-05",
+  "date": "2020-06-05",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-06-08",
+  "date": "2020-06-08",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.8 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-06-11",
+  "date": "2020-06-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-06-26",
+  "date": "2020-06-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-07-06",
+  "date": "2020-07-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-07-20",
+  "date": "2020-07-20",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-07-20",
+  "date": "2020-07-20",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-07-23",
+  "date": "2020-07-23",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-07-23",
+  "date": "2020-07-23",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-07-27",
+  "date": "2020-07-27",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-07-28",
+  "date": "2020-07-28",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-07-29",
+  "date": "2020-07-29",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-08-03",
+  "date": "2020-08-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-08-12",
+  "date": "2020-08-12",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-08-31",
+  "date": "2020-08-31",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-09-03",
+  "date": "2020-09-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 6.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-09-08",
+  "date": "2020-09-08",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 9.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-09-09",
+  "date": "2020-09-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-09-14",
+  "date": "2020-09-14",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-09-23",
+  "date": "2020-09-23",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-09-25",
+  "date": "2020-09-25",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-10-02",
+  "date": "2020-10-02",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-10-09",
+  "date": "2020-10-09",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 25.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-10-12",
+  "date": "2020-10-12",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-10-28",
+  "date": "2020-10-28",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2020-11-03",
+  "date": "2020-11-03",
+  "type": "macro",
+  "text": "United States presidential election. The outcome is not called on the night, leaving markets uncertain.",
+  "source": "Public record"
+ },
+ {
+  "id": "move_2020-11-03",
+  "date": "2020-11-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-11-05",
+  "date": "2020-11-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-11-06",
+  "date": "2020-11-06",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.9 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "macro_2020-11-09",
+  "date": "2020-11-09",
+  "type": "macro",
+  "text": "Pfizer and BioNTech report high efficacy in their COVID-19 vaccine trial, prompting a large rotation between market sectors.",
+  "source": "Company announcement"
+ },
+ {
+  "id": "vix_2020-11-09",
+  "date": "2020-11-09",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.8 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-11-10",
+  "date": "2020-11-10",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.8 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-11-12",
+  "date": "2020-11-12",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-11-13",
+  "date": "2020-11-13",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2020-11-24",
+  "date": "2020-11-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2020-12-09",
+  "date": "2020-12-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2020-12-21",
+  "date": "2020-12-21",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2020-12-22",
+  "date": "2020-12-22",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-01-04",
+  "date": "2021-01-04",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "macro_2021-01-06",
+  "date": "2021-01-06",
+  "type": "macro",
+  "text": "Disruption at the US Capitol during the certification of the election result.",
+  "source": "Public record"
+ },
+ {
+  "id": "vix_2021-01-07",
+  "date": "2021-01-07",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 22.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-01-07",
+  "date": "2021-01-07",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-01-08",
+  "date": "2021-01-08",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-01-11",
+  "date": "2021-01-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-01-27",
+  "date": "2021-01-27",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 37.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-01-29",
+  "date": "2021-01-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-02-01",
+  "date": "2021-02-01",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-02-03",
+  "date": "2021-02-03",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 22.9 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-02-22",
+  "date": "2021-02-22",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-02-25",
+  "date": "2021-02-25",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 28.9 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-02-25",
+  "date": "2021-02-25",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-03-01",
+  "date": "2021-03-01",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-03-01",
+  "date": "2021-03-01",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-03-03",
+  "date": "2021-03-03",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-03-05",
+  "date": "2021-03-05",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-03-08",
+  "date": "2021-03-08",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-03-09",
+  "date": "2021-03-09",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-03-09",
+  "date": "2021-03-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 7.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-03-18",
+  "date": "2021-03-18",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-04-13",
+  "date": "2021-04-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-05-10",
+  "date": "2021-05-10",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-05-12",
+  "date": "2021-05-12",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-05-13",
+  "date": "2021-05-13",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-09-20",
+  "date": "2021-09-20",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-09-21",
+  "date": "2021-09-21",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-10-25",
+  "date": "2021-10-25",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-11-09",
+  "date": "2021-11-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-11-26",
+  "date": "2021-11-26",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 28.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2021-11-29",
+  "date": "2021-11-29",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "macro_2021-11-30",
+  "date": "2021-11-30",
+  "type": "macro",
+  "text": "The Federal Reserve chair signals that the word 'transitory' is no longer the right description of inflation, opening the door to faster tightening.",
+  "source": "Congressional testimony"
+ },
+ {
+  "id": "vix_2021-11-30",
+  "date": "2021-11-30",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-12-03",
+  "date": "2021-12-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2021-12-07",
+  "date": "2021-12-07",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 21.9 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2021-12-07",
+  "date": "2021-12-07",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-12-16",
+  "date": "2021-12-16",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2021-12-22",
+  "date": "2021-12-22",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2022-01-03",
+  "date": "2022-01-03",
+  "type": "macro",
+  "text": "US equity indices reach record highs as markets begin to price in interest-rate rises.",
+  "source": "Market data"
+ },
+ {
+  "id": "move_2022-01-03",
+  "date": "2022-01-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-01-05",
+  "date": "2022-01-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-01-13",
+  "date": "2022-01-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-01-20",
+  "date": "2022-01-20",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-01-27",
+  "date": "2022-01-27",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-01-28",
+  "date": "2022-01-28",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-01-31",
+  "date": "2022-01-31",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.8 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-01-31",
+  "date": "2022-01-31",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-02-11",
+  "date": "2022-02-11",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.4 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-02-11",
+  "date": "2022-02-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-02-15",
+  "date": "2022-02-15",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-02-16",
+  "date": "2022-02-16",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.3 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-02-17",
+  "date": "2022-02-17",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 28.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-02-17",
+  "date": "2022-02-17",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-02-23",
+  "date": "2022-02-23",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2022-02-24",
+  "date": "2022-02-24",
+  "type": "macro",
+  "text": "Russia begins a full-scale invasion of Ukraine. Energy and commodity prices rise sharply.",
+  "source": "Public record"
+ },
+ {
+  "id": "move_2022-02-24",
+  "date": "2022-02-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-03-07",
+  "date": "2022-03-07",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-03-09",
+  "date": "2022-03-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-03-11",
+  "date": "2022-03-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-03-15",
+  "date": "2022-03-15",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2022-03-16",
+  "date": "2022-03-16",
+  "type": "macro",
+  "text": "The Federal Reserve raises rates by 0.25%, the first increase of the tightening cycle.",
+  "source": "Federal Reserve FOMC statement"
+ },
+ {
+  "id": "move_2022-03-16",
+  "date": "2022-03-16",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-03-18",
+  "date": "2022-03-18",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.9 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-03-22",
+  "date": "2022-03-22",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-03-28",
+  "date": "2022-03-28",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-04-04",
+  "date": "2022-04-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-04-06",
+  "date": "2022-04-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-04-11",
+  "date": "2022-04-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-04-22",
+  "date": "2022-04-22",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 28.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-04-26",
+  "date": "2022-04-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 6.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-04",
+  "date": "2022-05-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-05",
+  "date": "2022-05-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-09",
+  "date": "2022-05-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-11",
+  "date": "2022-05-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-13",
+  "date": "2022-05-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-17",
+  "date": "2022-05-17",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-18",
+  "date": "2022-05-18",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-23",
+  "date": "2022-05-23",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-26",
+  "date": "2022-05-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-05-27",
+  "date": "2022-05-27",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-06-02",
+  "date": "2022-06-02",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-06-03",
+  "date": "2022-06-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-06-06",
+  "date": "2022-06-06",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-06-07",
+  "date": "2022-06-07",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-06-09",
+  "date": "2022-06-09",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-06-10",
+  "date": "2022-06-10",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-06-13",
+  "date": "2022-06-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2022-06-15",
+  "date": "2022-06-15",
+  "type": "macro",
+  "text": "The Federal Reserve raises rates by 0.75%, its largest single increase since 1994, after a higher-than-expected inflation reading.",
+  "source": "Federal Reserve FOMC statement"
+ },
+ {
+  "id": "move_2022-06-15",
+  "date": "2022-06-15",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-06-16",
+  "date": "2022-06-16",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-06-21",
+  "date": "2022-06-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-06-24",
+  "date": "2022-06-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-06-28",
+  "date": "2022-06-28",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-07-08",
+  "date": "2022-07-08",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-07-11",
+  "date": "2022-07-11",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-07-11",
+  "date": "2022-07-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-07-15",
+  "date": "2022-07-15",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.2 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-07-18",
+  "date": "2022-07-18",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.3 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-07-19",
+  "date": "2022-07-19",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-07-21",
+  "date": "2022-07-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.9% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-07-27",
+  "date": "2022-07-27",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-07-29",
+  "date": "2022-07-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-08-10",
+  "date": "2022-08-10",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-08-26",
+  "date": "2022-08-26",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-08-26",
+  "date": "2022-08-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-09-07",
+  "date": "2022-09-07",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "macro_2022-09-13",
+  "date": "2022-09-13",
+  "type": "macro",
+  "text": "US inflation data comes in above expectations, triggering one of the largest single-day equity falls of the year.",
+  "source": "US Bureau of Labor Statistics"
+ },
+ {
+  "id": "vix_2022-09-13",
+  "date": "2022-09-13",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.3 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-09-13",
+  "date": "2022-09-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-09-29",
+  "date": "2022-09-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-04",
+  "date": "2022-10-04",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-07",
+  "date": "2022-10-07",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2022-10-13",
+  "date": "2022-10-13",
+  "type": "macro",
+  "text": "US inflation data is released amid heavy market volatility; equities swing sharply within the session.",
+  "source": "US Bureau of Labor Statistics"
+ },
+ {
+  "id": "move_2022-10-13",
+  "date": "2022-10-13",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-14",
+  "date": "2022-10-14",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-17",
+  "date": "2022-10-17",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-21",
+  "date": "2022-10-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-10-28",
+  "date": "2022-10-28",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-11-02",
+  "date": "2022-11-02",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-11-04",
+  "date": "2022-11-04",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2022-11-08",
+  "date": "2022-11-08",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-11-09",
+  "date": "2022-11-09",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2022-11-10",
+  "date": "2022-11-10",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2022-11-10",
+  "date": "2022-11-10",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 7.5% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-11-30",
+  "date": "2022-11-30",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 5.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-12-05",
+  "date": "2022-12-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-12-22",
+  "date": "2022-12-22",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2022-12-29",
+  "date": "2022-12-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-01-03",
+  "date": "2023-01-03",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-01-26",
+  "date": "2023-01-26",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-01-30",
+  "date": "2023-01-30",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-02-02",
+  "date": "2023-02-02",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-02-21",
+  "date": "2023-02-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2023-03-10",
+  "date": "2023-03-10",
+  "type": "macro",
+  "text": "Silicon Valley Bank is closed by regulators, the largest US bank failure since 2008. Concern spreads to other regional banks.",
+  "source": "FDIC statement"
+ },
+ {
+  "id": "vix_2023-03-13",
+  "date": "2023-03-13",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2023-03-14",
+  "date": "2023-03-14",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.7 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2023-03-14",
+  "date": "2023-03-14",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2023-03-15",
+  "date": "2023-03-15",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 26.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2023-03-16",
+  "date": "2023-03-16",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.0 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "vix_2023-03-17",
+  "date": "2023-03-17",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 25.5 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "macro_2023-03-19",
+  "date": "2023-03-19",
+  "type": "macro",
+  "text": "UBS agrees to acquire Credit Suisse in a transaction arranged by Swiss authorities.",
+  "source": "Swiss National Bank statement"
+ },
+ {
+  "id": "vix_2023-03-20",
+  "date": "2023-03-20",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2023-05-05",
+  "date": "2023-05-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2023-05-24",
+  "date": "2023-05-24",
+  "type": "macro",
+  "text": "A major semiconductor company issues revenue guidance far above expectations, citing demand for AI data-centre hardware.",
+  "source": "Company earnings release"
+ },
+ {
+  "id": "move_2023-07-20",
+  "date": "2023-07-20",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2023-07-26",
+  "date": "2023-07-26",
+  "type": "macro",
+  "text": "The Federal Reserve raises rates to 5.25-5.50%, which proves to be the final increase of the cycle.",
+  "source": "Federal Reserve FOMC statement"
+ },
+ {
+  "id": "move_2023-08-21",
+  "date": "2023-08-21",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-08-29",
+  "date": "2023-08-29",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.3% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2023-09-11",
+  "date": "2023-09-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2024-07-11",
+  "date": "2024-07-11",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2024-07-24",
+  "date": "2024-07-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 5.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2024-08-05",
+  "date": "2024-08-05",
+  "type": "macro",
+  "text": "A rapid unwinding of yen-funded carry trades causes a sharp global equity sell-off and a spike in volatility.",
+  "source": "Market data"
+ },
+ {
+  "id": "vix_2024-08-05",
+  "date": "2024-08-05",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 38.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2024-08-05",
+  "date": "2024-08-05",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.8% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2024-08-08",
+  "date": "2024-08-08",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 23.8 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2024-09-06",
+  "date": "2024-09-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.2% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2024-09-19",
+  "date": "2024-09-19",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 3.4% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2024-10-24",
+  "date": "2024-10-24",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 4.0% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "move_2024-10-31",
+  "date": "2024-10-31",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 3.7% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "macro_2024-11-05",
+  "date": "2024-11-05",
+  "type": "macro",
+  "text": "United States presidential election.",
+  "source": "Public record"
+ },
+ {
+  "id": "move_2024-11-06",
+  "date": "2024-11-06",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks rises 6.1% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2024-12-18",
+  "date": "2024-12-18",
+  "type": "vix",
+  "text": "Market volatility rises above the stress threshold: the VIX closes at 27.6 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ },
+ {
+  "id": "move_2024-12-18",
+  "date": "2024-12-18",
+  "type": "move",
+  "text": "The equal-weighted basket of the five stocks falls 4.6% in one session, an unusually large daily move.",
+  "source": "Computed from daily closing prices"
+ },
+ {
+  "id": "vix_2024-12-19",
+  "date": "2024-12-19",
+  "type": "vix",
+  "text": "Market volatility falls back below the stress threshold: the VIX closes at 24.1 against a threshold of 25.",
+  "source": "CBOE VIX daily close"
+ }
+]
