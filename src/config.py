@@ -31,6 +31,15 @@ MODEL_DIR    = BASE_DIR / "saved_models"
 OUTPUT_DIR   = BASE_DIR / "outputs"
 CACHE_DIR    = DATA_DIR / "cache"
 
+# Load local overrides before any environment-backed setting is declared.  The
+# file is git-ignored; importing config therefore works the same way from the
+# notebook, the Flask app and one-off command-line checks.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except ImportError:
+    pass
+
 for _d in (DATA_DIR, MODEL_DIR, OUTPUT_DIR, CACHE_DIR):
     _d.mkdir(parents=True, exist_ok=True)
 
@@ -161,11 +170,34 @@ TICKER_ALIASES = {
 }
 
 # ---------------------------------------------------------------- LLM settings
-GEMINI_MODEL = "gemini-2.5-flash"
+# Gemini 2.5 Flash is no longer available to every API account.  Use Google's
+# current stable Flash model for live calls, while allowing an explicit override
+# for reproducibility or a future migration without another source-code change.
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip() or "gemini-3.6-flash"
+EVALUATED_GEMINI_MODEL = "gemini-2.5-flash"
 
-# temperature=0 asks the model to be as close to deterministic as it can be.
-# It is NOT fully deterministic even so - and measuring exactly that is one of
-# the results this project reports (see SELF_CONSISTENCY_RUNS).
+# Gemini 3 uses thinking levels instead of the Gemini 2.5 thinking-token budget.
+# "minimal" is the closest supported setting to the no-thinking policy used by
+# the original experiment, and keeps interactive calls quick and inexpensive.
+GEMINI_THINKING_LEVEL = (
+    os.getenv("GEMINI_THINKING_LEVEL", "minimal").strip().lower() or "minimal"
+)
+if GEMINI_THINKING_LEVEL not in {"minimal", "low", "medium", "high"}:
+    raise ValueError(
+        "GEMINI_THINKING_LEVEL must be one of: minimal, low, medium, high"
+    )
+
+# Old prompt-only cache keys contain responses from the evaluated Gemini 2.5
+# experiment. Never mix them into current-model calls unless a user explicitly
+# opts into thesis replay (or configures the original 2.5 model itself).
+GEMINI_USE_LEGACY_CACHE = (
+    os.getenv("GEMINI_USE_LEGACY_CACHE", "false").strip().lower()
+    in {"1", "true", "yes", "on"}
+)
+
+# Retained for replaying the original Gemini 2.5 experiment. Modern Gemini
+# models deprecate sampling-temperature overrides, so live Gemini 3 calls do not
+# send this value.
 LLM_TEMPERATURE = 0.0
 LLM_MAX_TOKENS  = 2048
 
@@ -173,8 +205,8 @@ LLM_MAX_TOKENS  = 2048
 # 5 is enough to detect an unstable answer without multiplying the API bill by more.
 SELF_CONSISTENCY_RUNS = 5
 
-# Hide the real stock name from the LLM. Gemini was trained on text covering
-# 2019-2024, so showing "NVDA" would test its memory, not its forecasting.
+# Hide the real stock name from the LLM. Showing "NVDA" could test memorised
+# company history rather than forecasting from the controlled prompt.
 ANONYMISE_TICKERS = True
 
 # ---------------------------------------------------------------- RAG settings
@@ -225,12 +257,6 @@ DEFAULT_PROFILE = "balanced"
 
 # ---------------------------------------------------------------- API key
 # The key is read from the environment, never written in the code.
-try:
-    from dotenv import load_dotenv
-    load_dotenv(BASE_DIR / ".env")
-except ImportError:
-    pass
-
 GEMINI_KEY = os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
 
 

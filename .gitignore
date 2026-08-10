@@ -1,5 +1,6 @@
 # NEVER commit the real key. Only .env.example belongs in the submission.
 .env
+data/cache/
 backup
 handbook
 submission

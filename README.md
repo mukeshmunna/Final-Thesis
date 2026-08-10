@@ -22,10 +22,11 @@ To see the live demo instead:
 python app.py          # http://localhost:5000
 ```
 
-> **The guided demo does not need the network or an API key.** Its genuine Gemini responses are
-> saved in `data/cache/llm_cache.json`, and the header confirms **Demo ready** only after checking
-> every guided comparison and the five-run stability showcase. A local `.env` may be used for new,
-> uncached questions; it is gitignored and must never be included in a submission archive.
+> **The guided demo can run offline after its Gemini responses have been cached.** The header
+> confirms **Demo ready** only after checking every guided comparison and the five-run stability
+> showcase. If `data/cache/llm_cache.json` is not present yet, configure a local `.env` and run the
+> guided cases once while online. The key and generated cache are local-only and must never be
+> included in a submission archive.
 
 ---
 
@@ -356,7 +357,7 @@ separate them on accuracy. But read the top two rows carefully, because the near
 worth about a point.** Grounding lifts the LLM from 69.9 to 77.2; the LSTM scores 51.4 because a bare
 number cannot explain, attribute, or be checked.
 
-Two things to be honest about, both stated in full in `outputs/RESULTS.md` §9:
+Two things to be honest about, both stated in full in `research.ipynb` §9:
 
 1. **42 of the 100 points are earned identically by all four arms.** Those rules are worth keeping —
    none of the four ever fabricated a figure, and that is a result — but they inflate every total
@@ -379,20 +380,20 @@ all three single arms. That is the one axis where it leads all three rather than
 | | |
 |---|---|
 | `research.ipynb` | **Start here.** The whole study in the order it runs, saved with every output. |
-| **`outputs/RESULTS.md`** | The full results report — every table, every figure, every statistical test — generated from the data files beside it. |
+| `outputs/results.json` | Machine-readable metrics and thresholds used by both the notebook and demo. |
 | `app.py` | Flask web demo — builds one personalised Hybrid-led reply from four research arms |
 | `templates/index.html` | Front end for the demo |
 | `src/` | The shared engine — imported by **both** the notebook and the app |
 | `data/` | Cached prices, the VIX, the evidence corpus, the LLM response cache |
 | `saved_models/` | The final LSTM and its scaler, used by the demo for unseen dates |
-| `outputs/` | Every result: figures, tables, and the generated report |
+| `outputs/` | Saved predictions, figures, tables, and machine-readable result summaries |
 | `backup/` | Files kept but not part of the submission — see `backup/README.md` |
 | `requirements.txt` | Pinned to exactly what produced these numbers |
 | `.env.example` | Template for the API key |
 
-`outputs/RESULTS.md` is the written-up version of the same results, generated from the rest of
-`outputs/` by the run recorded there. `research.ipynb` is the live copy: re-running it re-derives
-every table and figure in `outputs/` from the saved predictions.
+`research.ipynb` is the written-up and executable copy of the study. Re-running it re-derives every
+table and figure in `outputs/` from the saved predictions; `outputs/results.json` carries the compact
+metrics consumed by the web demo.
 
 ### `src/` — one module per idea
 
@@ -432,8 +433,10 @@ RUN_BACKTEST   = False   # call the LLM ~1,000 times          (needs GEMINI_API_
 Turning a flag on regenerates that stage from scratch. The code behind each flag is the code that
 produced the reported results — nothing is faked either way.
 
-Every Gemini response is cached in `data/cache/llm_cache.json`, so even `RUN_BACKTEST = True`
-reproduces the exact reported numbers **without paying for the API again**.
+Every new Gemini response is cached in `data/cache/llm_cache.json`. Exact replay of the reported
+Gemini 2.5 results requires the matching legacy cache and `GEMINI_USE_LEGACY_CACHE=true`. Without
+that cache, `RUN_BACKTEST = True` calls the configured live model and creates a new experiment; it
+does not reproduce the historical Gemini 2.5 run.
 
 `--rescore` rebuilds `outputs/results.json` from the per-row probabilities already saved by a full
 run. It exists so a change to *how the arms are combined* can be evaluated on exactly the responses
@@ -449,6 +452,11 @@ cp .env.example .env       # then paste your key from https://aistudio.google.co
 
 **No key is stored anywhere in this submission.** If the key is missing the code raises a clear
 error — it never invents a response, so no result here can rest on fabricated data.
+Live requests default to the stable `gemini-3.6-flash` model. `GEMINI_MODEL` and
+`GEMINI_THINKING_LEVEL` in `.env` provide explicit overrides; restart `app.py` after changing them.
+The saved thesis results retain their original Gemini 2.5 model attribution. Set
+`GEMINI_USE_LEGACY_CACHE=true` only when intentionally replaying an old prompt-only thesis cache;
+the default prevents a Gemini 2.5 response from being mistaken for a live Gemini 3 result.
 
 ---
 
@@ -465,8 +473,8 @@ a threshold for the ML arm only, which quietly flattered it.
 **3. Shocks are defined objectively.** A shock day is VIX > 25. The VIX is published on the day, so
 labelling uses no future information.
 
-**4. The LLM cannot see the stock names.** Gemini's training data covers 2019–2024, so naming the
-stock would test memory, not forecasting. Each is called "Stock A"…"Stock E" and prices are rebased
+**4. The LLM cannot see the stock names.** Naming the stock could test memorised company history,
+not forecasting from the controlled input. Each is called "Stock A"…"Stock E" and prices are rebased
 to start at 100. The identity-leak check confirms it never worked out which was which.
 
 **5. Retrieval cannot see the future.** An evidence item is visible only if dated on or before the

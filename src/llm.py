@@ -2,9 +2,9 @@
 Arms 2 and 3: the LLM, without and with retrieved evidence.
 
 The only difference between the two arms is whether an EVIDENCE section is
-present in the prompt. Everything else - model, temperature, wording, output
-format - is identical, so any difference in the results is attributable to the
-retrieval step and nothing else.
+present in the prompt. Everything else - model, generation policy, wording and
+output format - is identical, so any difference in the results is attributable
+to the retrieval step and nothing else.
 
 Two things this module is built to expose
 -----------------------------------------
@@ -16,6 +16,7 @@ Two things this module is built to expose
 
 import hashlib
 import json
+import os
 import re
 import threading
 import time
@@ -25,9 +26,46 @@ import pandas as pd
 from . import config as C
 from .data_loader import regime_of
 
-# Anonymous labels. Gemini's training data covers 2019-2024, so showing "NVDA"
-# would test what it remembers, not what it can forecast.
+# Anonymous labels prevent a model from substituting remembered company history
+# for the controlled market snapshot it is asked to evaluate.
 ANON_LABELS = {t: f"Stock {chr(65 + i)}" for i, t in enumerate(C.TICKERS)}
+
+
+class LLMServiceError(RuntimeError):
+    """A safe, actionable description of an upstream Gemini failure."""
+
+    def __init__(self, message, *, status_code=None, retryable=False):
+        super().__init__(message)
+        self.status_code = status_code
+        self.retryable = bool(retryable)
+
+
+def _generation_family(model=None):
+    """Return the request-policy family for a supported model identifier."""
+    model_name = (model or C.GEMINI_MODEL).rsplit("/", 1)[-1].lower()
+    if model_name.startswith("gemini-2.5"):
+        return "gemini-2.5"
+    if model_name in {
+        "gemini-flash-latest",
+        "gemini-flash-lite-latest",
+        "gemini-pro-latest",
+    }:
+        return "gemini-3+"
+    match = re.match(r"gemini-(\d+)(?:\.|-)", model_name)
+    if match and int(match.group(1)) >= 3:
+        return "gemini-3+"
+    return "unsupported"
+
+
+def _uses_legacy_generation_config(model=None):
+    """Gemini 2.5 uses token budgets; Gemini 3+ uses thinking levels."""
+    return _generation_family(model) == "gemini-2.5"
+
+
+def _is_evaluated_model(model=None):
+    configured = (model or C.GEMINI_MODEL).rsplit("/", 1)[-1].lower()
+    evaluated = C.EVALUATED_GEMINI_MODEL.rsplit("/", 1)[-1].lower()
+    return configured == evaluated
 
 
 # ---------------------------------------------------------------- cache
@@ -44,8 +82,9 @@ def _load_cache():
         if _CACHE is None:
             if C.LLM_CACHE.exists():
                 try:
-                    _CACHE = json.loads(C.LLM_CACHE.read_text(encoding="utf-8"))
-                except json.JSONDecodeError:
+                    loaded = json.loads(C.LLM_CACHE.read_text(encoding="utf-8"))
+                    _CACHE = loaded if isinstance(loaded, dict) else {}
+                except (OSError, json.JSONDecodeError):
                     _CACHE = {}
             else:
                 _CACHE = {}
@@ -53,16 +92,44 @@ def _load_cache():
 
 
 def flush_cache():
-    """Write the cache to disk. Called at the end of a batch, not per response."""
+    """Atomically write the cache so interruption cannot leave partial JSON."""
     with _CACHE_LOCK:
         if _CACHE is not None:
-            C.LLM_CACHE.write_text(json.dumps(_CACHE, indent=1), encoding="utf-8")
+            temporary = C.LLM_CACHE.with_suffix(f".{os.getpid()}.tmp")
+            temporary.write_text(json.dumps(_CACHE, indent=1), encoding="utf-8")
+            temporary.replace(C.LLM_CACHE)
+
+
+def _legacy_cache_key(prompt, run_index):
+    """Key used by the original Gemini 2.5 cache, retained for thesis replays."""
+    h = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
+    return f"{h}_run{run_index}"
 
 
 def _cache_key(prompt, run_index):
-    """One entry per (prompt, run number), so repeated runs are cached separately."""
-    h = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
-    return f"{h}_run{run_index}"
+    """Separate responses by prompt, run, model and generation policy."""
+    family = _generation_family()
+    if family == "gemini-2.5":
+        generation = f"temperature={C.LLM_TEMPERATURE}|thinking_budget=0"
+    elif family == "gemini-3+":
+        generation = f"thinking_level={C.GEMINI_THINKING_LEVEL}"
+    else:
+        generation = "unsupported"
+    policy = f"{C.GEMINI_MODEL}|{generation}|max_tokens={C.LLM_MAX_TOKENS}|{prompt}"
+    h = hashlib.sha256(policy.encode("utf-8")).hexdigest()[:20]
+    return f"v2_{h}_run{run_index}"
+
+
+def _cached_text(cache, prompt, run_index):
+    """Return current-model data, with legacy replay only when explicitly enabled."""
+    keys = [_cache_key(prompt, run_index)]
+    if _is_evaluated_model() or C.GEMINI_USE_LEGACY_CACHE:
+        keys.append(_legacy_cache_key(prompt, run_index))
+    for key in keys:
+        value = cache.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    return None
 
 
 def has_cached_response(prompt, run_index=0):
@@ -75,10 +142,9 @@ def has_cached_response(prompt, run_index=0):
     """
     if not prompt:
         return False
-    key = _cache_key(prompt, run_index)
     cache = _load_cache()
     with _CACHE_LOCK:
-        return key in cache
+        return _cached_text(cache, prompt, run_index) is not None
 
 
 # ---------------------------------------------------------------- prompt building
@@ -194,7 +260,76 @@ def build_prompt(bundle, ticker, date, evidence=None, anonymise=True):
 
 
 # ---------------------------------------------------------------- calling
-def call_gemini(prompt, run_index=0, use_cache=True, max_retries=3):
+def _generation_config(types):
+    """Build a request compatible with the configured Gemini model family."""
+    options = {
+        "max_output_tokens": C.LLM_MAX_TOKENS,
+        "response_mime_type": "application/json",
+    }
+    family = _generation_family()
+    if family == "gemini-2.5":
+        options.update({
+            "temperature": C.LLM_TEMPERATURE,
+            "thinking_config": types.ThinkingConfig(thinking_budget=0),
+        })
+    elif family == "gemini-3+":
+        options["thinking_config"] = types.ThinkingConfig(
+            thinking_level=types.ThinkingLevel(C.GEMINI_THINKING_LEVEL)
+        )
+    else:
+        raise LLMServiceError(
+            f"Gemini model '{C.GEMINI_MODEL}' is not supported by this application. "
+            "Use a Gemini 3 model (recommended: gemini-3.6-flash).",
+            retryable=False,
+        )
+    return types.GenerateContentConfig(**options)
+
+
+def _service_error(exc):
+    """Convert a provider exception into a sanitized, retry-aware error."""
+    status = getattr(exc, "code", None)
+    try:
+        status = int(status) if status is not None else None
+    except (TypeError, ValueError):
+        status = None
+
+    retryable = bool(
+        status in {408, 409, 425, 429}
+        or (status is not None and 500 <= status <= 599)
+    )
+    if status == 400:
+        message = (
+            f"Gemini rejected the request for model '{C.GEMINI_MODEL}'. "
+            "Check GEMINI_MODEL and restart the application."
+        )
+    elif status in {401, 403}:
+        message = "Gemini authentication failed. Check GEMINI_API_KEY and restart the application."
+    elif status == 404:
+        message = (
+            f"Gemini model '{C.GEMINI_MODEL}' is unavailable for this API key. "
+            "Set GEMINI_MODEL to a supported model and restart the application."
+        )
+    elif status == 429:
+        message = "Gemini's rate limit or quota was reached. Try again later."
+    elif status is not None and status >= 500:
+        message = "Gemini is temporarily unavailable. Try again later."
+    else:
+        message = "The Gemini request failed. Try again later."
+    return LLMServiceError(message, status_code=status, retryable=retryable)
+
+
+def _passes_validator(text, validator):
+    if validator is None:
+        return True
+    try:
+        return bool(validator(text))
+    except Exception:
+        return False
+
+
+def call_gemini(
+    prompt, run_index=0, use_cache=True, max_retries=3, validator=None
+):
     """Send one prompt. Returns the raw text.
 
     Raises when the key is missing rather than returning anything invented, so a
@@ -204,35 +339,70 @@ def call_gemini(prompt, run_index=0, use_cache=True, max_retries=3):
     if use_cache:
         cache = _load_cache()
         with _CACHE_LOCK:
-            if key in cache:
-                return cache[key], True                # (text, was_cached)
+            cached = _cached_text(cache, prompt, run_index)
+            if cached is not None and _passes_validator(cached, validator):
+                return cached, True                    # (text, was_cached)
 
-    C.require_key()
+    try:
+        C.require_key()
+    except RuntimeError as exc:
+        raise LLMServiceError(
+            "GEMINI_API_KEY is not configured. Add it to .env and restart the application.",
+            retryable=False,
+        ) from exc
+
     from google import genai
-    from google.genai import types
+    from google.genai import errors, types
+
+    transport_error_types = [TimeoutError, ConnectionError]
+    try:
+        import httpx
+        transport_error_types.append(httpx.TransportError)
+    except ImportError:
+        pass
+    try:
+        import requests
+        transport_error_types.append(requests.exceptions.RequestException)
+    except ImportError:
+        pass
+    transport_errors = tuple(transport_error_types)
 
     client = genai.Client(api_key=C.GEMINI_KEY)
-    for attempt in range(max_retries):
+    attempts = max(1, int(max_retries))
+    config = _generation_config(types)
+    for attempt in range(attempts):
         try:
             resp = client.models.generate_content(
                 model=C.GEMINI_MODEL,
                 contents=prompt,
-                config=types.GenerateContentConfig(
-                    temperature=C.LLM_TEMPERATURE,
-                    max_output_tokens=C.LLM_MAX_TOKENS,
-                    response_mime_type="application/json",
-                    thinking_config=types.ThinkingConfig(thinking_budget=0),
-                ),
+                config=config,
             )
             text = (resp.text or "").strip()
+            if not text or not _passes_validator(text, validator):
+                if attempt == attempts - 1:
+                    detail = "an empty response" if not text else "JSON in an unexpected format"
+                    raise LLMServiceError(
+                        f"Gemini returned {detail}. Try again later.",
+                        retryable=True,
+                    )
+                time.sleep(2 ** attempt)
+                continue
             if use_cache:
                 cache = _load_cache()
                 with _CACHE_LOCK:
                     cache[key] = text
             return text, False
-        except Exception:
-            if attempt == max_retries - 1:
-                raise
+        except errors.APIError as exc:
+            error = _service_error(exc)
+            if not error.retryable or attempt == attempts - 1:
+                raise error from exc
+            time.sleep(2 ** attempt)
+        except transport_errors as exc:
+            if attempt == attempts - 1:
+                raise LLMServiceError(
+                    "The Gemini service could not be reached. Try again later.",
+                    retryable=True,
+                ) from exc
             time.sleep(2 ** attempt)
 
 
@@ -322,10 +492,18 @@ class LLMArm:
         if prompt is None:
             return None
 
-        raw, cached = call_gemini(prompt, run_index=run_index, use_cache=use_cache)
+        raw, cached = call_gemini(
+            prompt,
+            run_index=run_index,
+            use_cache=use_cache,
+            validator=lambda text: parse_response(text) is not None,
+        )
         parsed = parse_response(raw)
         if parsed is None:
-            return None
+            raise LLMServiceError(
+                "Gemini returned JSON that does not match the forecast schema. Try again later.",
+                retryable=True,
+            )
 
         # p_up is a probability, so the two arms can be compared with the ML model
         # and blended in the hybrid.

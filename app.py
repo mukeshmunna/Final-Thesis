@@ -109,6 +109,16 @@ def read_json():
         return {}
 
 
+def llm_error_response(exc):
+    """Return a stable API error without leaking provider response internals."""
+    app.logger.warning("Gemini request unavailable: %s", exc)
+    return jsonify({
+        "error": str(exc),
+        "code": "llm_unavailable",
+        "retryable": exc.retryable,
+    }), 503
+
+
 def apply_threshold(result, arm):
     """Re-decide UP/DOWN using the tuned cut-off for this arm.
 
@@ -303,6 +313,7 @@ def api_meta():
         "arms":     C.ARM_LABELS,
         "ml_ready": ML_READY,
         "has_key":  bool(C.GEMINI_KEY),
+        "llm_model": C.GEMINI_MODEL,
         "n_evidence": len(RETRIEVER.items),
         "predict_days": C.PREDICT_DAYS,
         "readiness": readiness,
@@ -326,6 +337,7 @@ def api_health():
             "retrieval": {"ready": bool(RETRIEVER.items),
                           "evidence_items": len(RETRIEVER.items)},
             "llm": {"live_key_configured": bool(C.GEMINI_KEY),
+                    "model": C.GEMINI_MODEL,
                     "offline_demo": readiness["offline_ready"]},
         },
         "quality_order": [
@@ -354,6 +366,8 @@ def api_stability():
         cons = LLM_ARM.self_consistency(ticker, date, use_rag=use_rag, runs=runs)
         if cons is None:
             return jsonify({"error": "no response from the model"}), 502
+        if any(not output.get("cached") for output in cons.get("outputs", [])):
+            L.flush_cache()
 
         ml = ML.predict(ticker, date) if ML_READY else None
 
@@ -404,9 +418,15 @@ def api_stability():
                 "p_std":     0.0,
             } if ml else None,
         })
-    except Exception as exc:
+    except L.LLMServiceError as exc:
+        return llm_error_response(exc)
+    except Exception:
         traceback.print_exc()
-        return jsonify({"error": str(exc)}), 500
+        return jsonify({
+            "error": "An unexpected server error occurred.",
+            "code": "internal_error",
+            "retryable": False,
+        }), 500
 
 
 # ---------------------------------------------------------------- scenarios
@@ -845,12 +865,22 @@ def api_chat():
         regime = (ml or {}).get("regime") or D.regime_of(BUNDLE["vix"], date)[0]
 
         llm_plain = LLM_ARM.predict(ticker, date, use_rag=False)
-        llm_rag   = LLM_ARM.predict(ticker, date, use_rag=True)
-        if any(result is not None and not result.get("cached")
-               for result in (llm_plain, llm_rag)):
-            # Batch evaluation flushes once at the end. A web request has no such
-            # end-of-batch hook, so persist any newly warmed presentation answer
-            # before the process exits.
+        if llm_plain is None:
+            raise L.LLMServiceError(
+                "Gemini did not return a valid ungrounded forecast. Try again later.",
+                retryable=True,
+            )
+        if not llm_plain.get("cached"):
+            L.flush_cache()
+        llm_rag = LLM_ARM.predict(ticker, date, use_rag=True)
+        if llm_rag is None:
+            raise L.LLMServiceError(
+                "Gemini did not return a valid grounded forecast. Try again later.",
+                retryable=True,
+            )
+        if not llm_rag.get("cached"):
+            # Persist each successful paid call immediately. If the second arm
+            # fails, the first response is still available on the next request.
             L.flush_cache()
         hyb       = HYBRID.predict(ml, llm_rag, regime=regime) if (ml and llm_rag) else None
 
@@ -896,9 +926,27 @@ def api_chat():
             "track_record": track_record(),
         })
 
-    except Exception as exc:
+    except L.LLMServiceError as exc:
+        return llm_error_response(exc)
+    except Exception:
         traceback.print_exc()
-        return jsonify({"error": str(exc)}), 500
+        return jsonify({
+            "error": "An unexpected server error occurred.",
+            "code": "internal_error",
+            "retryable": False,
+        }), 500
+
+
+def _answer_json(text):
+    """Return a validated free-form answer object, or None for bad model JSON."""
+    try:
+        parsed = json.loads(text)
+    except (TypeError, json.JSONDecodeError):
+        return None
+    answer = parsed.get("answer") if isinstance(parsed, dict) else None
+    if not isinstance(answer, str) or not answer.strip():
+        return None
+    return parsed
 
 
 def _evidence_answer(message, evidence, date=None):
@@ -933,11 +981,13 @@ def _evidence_answer(message, evidence, date=None):
         f"QUESTION: {message}\n\n"
         'Reply as JSON: {"answer": "..."}'
     )
-    raw, _ = L.call_gemini(prompt)
-    try:
-        return json.loads(raw).get("answer", raw)
-    except json.JSONDecodeError:
-        return raw
+    raw, cached = L.call_gemini(
+        prompt,
+        validator=lambda text: _answer_json(text) is not None,
+    )
+    if not cached:
+        L.flush_cache()
+    return _answer_json(raw)["answer"]
 
 
 if __name__ == "__main__":

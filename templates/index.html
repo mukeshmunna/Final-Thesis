@@ -779,6 +779,14 @@ function requestError(message, retry) {
   body.appendChild(panel);
 }
 
+function responseError(response, payload) {
+  const error = new Error(payload.error || `Server returned ${response.status}`);
+  error.retryable = typeof payload.retryable === 'boolean'
+    ? payload.retryable
+    : response.status >= 500;
+  return error;
+}
+
 /** The ticker named in a sentence, or null. Matched against the server's list. */
 function tickerIn(text) {
   const low = String(text || '').toLowerCase();
@@ -1087,7 +1095,7 @@ async function send(payload, scenario) {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(payload), signal: controller.signal});
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error || `Server returned ${r.status}`);
+    if (!r.ok) throw responseError(r, d);
     // Cached thesis responses can return in a few milliseconds. A short, honest
     // processing state makes the hand-off readable without pretending a live API
     // call occurred; the source label on the answer still says exactly what ran.
@@ -1100,7 +1108,7 @@ async function send(payload, scenario) {
     const message = e.name === 'AbortError'
       ? 'The request took longer than 45 seconds. The guided examples should use saved AI responses; check the demo status and try again.'
       : e.message;
-    requestError(message, () => send(payload, scenario));
+    requestError(message, e.retryable === false ? null : () => send(payload, scenario));
   } finally {
     clearInterval(phaseTimer);
     clearTimeout(timer);
@@ -1276,7 +1284,7 @@ async function runStability(text) {
       body: JSON.stringify({ticker, date, runs: 5, use_rag: true}),
       signal: controller.signal});
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error || `Server returned ${r.status}`);
+    if (!r.ok) throw responseError(r, d);
     turn.remove();
     const out = shell();
     if (d.error) {
@@ -1290,7 +1298,7 @@ async function runStability(text) {
     const message = e.name === 'AbortError'
       ? 'The five-run stability check took longer than 45 seconds.'
       : e.message;
-    requestError(message, () => runStability(text));
+    requestError(message, e.retryable === false ? null : () => runStability(text));
   } finally {
     clearTimeout(timer);
     setBusy(false);
@@ -1341,7 +1349,7 @@ function renderStability(d, body) {
   const flipped = d.llm.flipped;
   const p = el('div', 'panel flat');
   let verdict = flipped
-    ? 'Same prompt, same temperature, a different answer. This is why a single LLM '
+    ? 'Same prompt, same generation settings, a different answer. This is why a single LLM '
       + 'accuracy figure is a sample rather than a property of the system.'
     : 'Stable on this input. Across the full evaluation the LLM flipped on 3.3% of '
       + 'cases — all of them in shock periods. Try a shock date.';
